@@ -1,0 +1,131 @@
+---
+title: "Physiology_figs"
+author: "Melissa Naugle"
+date: "10/23/2020"
+output: html_document
+---
+
+```{r }
+setwd(dir = "~/Desktop/GitHub/CBASS_bleachingdata/")
+rm( list = ls())
+graphics.off()
+library(ggplot2)
+require(plyr)
+library(dplyr)
+library(reshape2)
+library(mosaic)
+```
+
+Plot raw colorimetric data
+
+Makes 4 plots:
+1. controls (tank (28C) and field controls)
+2. 35C
+3. 34C
+4. 33C
+
+```{r avgreddata}
+data <- read.csv("raw data sheets/MasterASData.csv")
+head(data)
+data$Time.point <- as.character(data$Time.point)
+data$Time.point[data$Ramp == "Field"] <- "Field"
+
+#filter out only controls
+data_controls <- data %>%
+  filter(data$Ramp == "28" | data$Ramp == "Field") 
+
+data_controls$Time.point <- factor(data_controls$Time.point,
+                       levels = c('Field','Stress', 'Recovery'),ordered = TRUE)
+
+ggplot(data=data_controls, aes(x=Site, y = AverageRed, fill = Time.point))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("grey55", "sienna1", "coral4")) + 
+  ylab("Average Red Intensity \n (Higher = more bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+#blue shows stress, red shows recovery
+#each point is one coral 
+#lower value = less bleached 
+#cannery and fagaalu controls did not bleach but tele and vatia did 
+
+#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/AvgRed_controls.pdf", height = 5, width = 8)
+
+data_hightemp <- data %>%
+  filter(data$Ramp == "35") 
+
+data_medtemp <- data %>%
+  filter(data$Ramp == "34") 
+
+data_lowtemp <- data %>%
+  filter(data$Ramp == "33") 
+
+data_hightemp$Time.point <- factor(data_hightemp$Time.point, levels = c('Stress', 'Recovery'),ordered = TRUE)
+data_medtemp$Time.point <- factor(data_hightemp$Time.point, levels = c('Stress', 'Recovery'),ordered = TRUE)
+data_lowtemp$Time.point <- factor(data_hightemp$Time.point, levels = c('Stress', 'Recovery'),ordered = TRUE)
+
+ggplot(data=data_hightemp, aes(x=Site, y = AverageRed, fill = Time.point))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("sienna1", "coral4")) + 
+  ylab("Average Red Intensity at 35C \n (Higher = more bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/AvgRed_hightemps.pdf", height = 5, width = 8)
+
+ggplot(data=data_medtemp, aes(x=Site, y = AverageRed, fill = Time.point))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("sienna1", "coral4")) + 
+  ylab("Average Red Intensity at 34C \n (Higher = more bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/AvgRed_medtemps.pdf", height = 5, width = 8)
+
+ggplot(data=data_lowtemp, aes(x=Site, y = AverageRed, fill = Time.point))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("sienna1", "coral4")) + 
+  ylab("Average Red Intensity at 33C \n (Higher = more bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/AvgRed_lowtemps.pdf", height = 5, width = 8)
+```
+
+Normalized colorimetric data to tank control at 28C for each colony 
+
+Makes 3 plots:
+1. 33C normalized to controls
+2. 34C normalized to controls
+3. 35C normalized to controls
+
+```{r avgreddata_normalized}
+head(data)
+data$Coral.Watch.Color1 <- NULL
+data$Coral.Watch.Color2 <- NULL
+data$Coral.Watch.Color3 <- NULL
+data$PAM..Fv.Fm. <- NULL
+data$X <- NULL
+#if tank A-D, rep 1; if tank E-F, rep 2
+data$Rep[data$Tank == "A"] <- "1"
+data$Rep[data$Tank == "B"] <- "1"
+data$Rep[data$Tank == "C"] <- "1"
+data$Rep[data$Tank == "D"] <- "1"
+data$Rep[data$Tank == "E"] <- "2"
+data$Rep[data$Tank == "F"] <- "2"
+data$Rep[data$Tank == "G"] <- "2"
+data$Rep[data$Tank == "H"] <- "2"
+data$Tank <- NULL
+data_normalized <- spread(data, Ramp, AverageRed)
+head(data_normalized)
+data_normalized$t35_normalizedto28 <- data_normalized$`35` - data_normalized$`28`
+data_normalized$t34_normalizedto28 <- data_normalized$`34` - data_normalized$`28`
+data_normalized$t33_normalizedto28 <- data_normalized$`33` - data_normalized$`28`
+head(data_normalized)
+
+data_normalized$Time.point <- factor(data_normalized$Time.point,
+                                   levels = c('Stress', 'Recovery'),ordered = TRUE)
+
+ggplot(data=data_normalized, aes(x=Site, y = t33_normalizedto28, fill = Time.point)) + geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("sienna1", "coral4")) + 
+  ylab("Average Red Intensity \n 33C normalized to 28C \n (Higher = more bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/AvgRed_lowtemps_normalized.pdf", height = 5, width = 8)
+
+ggplot(data=data_normalized, aes(x=Site, y = t34_normalizedto28, fill = Time.point))+ geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("sienna1", "coral4")) + 
+  ylab("Average Red Intensity \n 34C normalized to 28C \n (Higher = more bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/AvgRed_medtemps_normalized.pdf", height = 5, width = 8)
+
+ggplot(data=data_normalized, aes(x=Site, y = t35_normalizedto28, fill = Time.point))+ geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("sienna1", "coral4")) + 
+  ylab("Average Red Intensity \n 35C normalized to 28C \n (Higher = more bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/AvgRed_hightemps_normalized.pdf", height = 5, width = 8)
+```
+
