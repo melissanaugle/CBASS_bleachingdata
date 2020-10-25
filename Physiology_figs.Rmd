@@ -16,6 +16,10 @@ library(reshape2)
 library(mosaic)
 ```
 
+
+# Red Intensity 
+
+
 Plot raw colorimetric data
 
 Makes 4 plots:
@@ -128,4 +132,283 @@ ggplot(data=data_normalized, aes(x=Site, y = t35_normalizedto28, fill = Time.poi
 
 #ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/AvgRed_hightemps_normalized.pdf", height = 5, width = 8)
 ```
+
+# CoralWatch Color Card
+
+
+
+Color Card data - raw
+
+Makes  figs
+1. Control (28C) color score at time point 1
+2. Control (28C) color score at time point 2
+3. Control (28C) color score at time point 3
+4. High (35C) color score at time point 1
+5. High (35C) color score at time point 2
+6. High (35C) color score at time point 3
+
+```{r colorcard}
+rm( list = ls())
+graphics.off()
+data <- read.csv("raw data sheets/MasterASData.csv")
+head(data)
+data$Time.point <- as.character(data$Time.point)
+data$Time.point[data$Ramp == "Field"] <- "Field"
+
+data$CWchange1 <- data$Coral.Watch.Color1 - data$Coral.Watch.Color2
+data$CWchange2 <- data$Coral.Watch.Color1 - data$Coral.Watch.Color3
+
+data$Time.point <- factor(data$Time.point, levels = c('Field', 'Stress', 'Recovery'),ordered = TRUE)
+
+data_controls <- data %>%
+  filter(data$Ramp == "28" | data$Ramp == "Field") 
+
+#raw data of controls
+ggplot(data=data_controls, aes(x=Site, y = Coral.Watch.Color1, fill = Time.point))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("grey55", "sienna1", "coral4")) + 
+  ylab("Color Score of controls at T=1") + xlab("") + theme(axis.text=element_text(size=14))
+
+ggplot(data=data_controls, aes(x=Site, y = Coral.Watch.Color2, fill = Time.point))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("sienna1", "coral4")) + 
+  ylab("Color Score of controls at T=2") + xlab("") + theme(axis.text=element_text(size=14))
+
+ggplot(data=data_controls, aes(x=Site, y = Coral.Watch.Color3, fill = Time.point))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("coral4")) + 
+  ylab("Color Score of controls at T=3") + xlab("") + theme(axis.text=element_text(size=14))
+
+#raw data of high temp 35C
+
+data_hightemp <- data %>%
+  filter(data$Ramp == "35") 
+
+ggplot(data=data_hightemp, aes(x=Site, y = Coral.Watch.Color1, fill = Time.point))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("sienna1", "coral4")) + 
+  ylab("Color Score of 35C at T=1") + xlab("") + theme(axis.text=element_text(size=14))
+
+
+ggplot(data=data_hightemp, aes(x=Site, y = Coral.Watch.Color2, fill = Time.point))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("sienna1", "coral4")) + 
+  ylab("Color Score of 35C at T=2") + xlab("") + theme(axis.text=element_text(size=14))
+
+ggplot(data=data_hightemp, aes(x=Site, y = Coral.Watch.Color3, fill = Time.point))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("coral4")) + 
+  ylab("Color Score of 35C at T=3") + xlab("") + theme(axis.text=element_text(size=14))
+
+#change in color over time
+
+#from Cw2 to CW1
+ggplot(data=data_hightemp, aes(x=Site, y = CWchange1, fill = Site))+ 
+  geom_boxplot() + theme_minimal()  + 
+  ylab("Color Score of 35C at T1 - T2 \n (higher = more bleached, lower = less bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/CW_T1-T2_raw.pdf", height = 5, width = 8)
+
+#from CW3 to CW1
+ggplot(data=data_hightemp, aes(x=Site, y = CWchange2, fill = Site))+ 
+  geom_boxplot() + theme_minimal()  + 
+  ylab("Color Score of 35C at T1 - T3 \n (higher = more bleached, lower = less bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/CW_T1-T3_raw.pdf", height = 5, width = 8)
+
+```
+
+Colorimetric data normalized to controls (at 28C)
+
+
+
+```{r colorimetricdata_normalized}
+
+data <- read.csv("raw data sheets/MasterASData.csv")
+data_cw <- data
+head(data_cw)
+data_cw$AverageRed <- NULL
+data_cw$PAM..Fv.Fm. <- NULL
+data_cw$X <- NULL
+#if tank A-D, rep 1; if tank E-F, rep 2
+data_cw$Rep[data_cw$Tank == "A"] <- "1"
+data_cw$Rep[data_cw$Tank == "B"] <- "1"
+data_cw$Rep[data_cw$Tank == "C"] <- "1"
+data_cw$Rep[data_cw$Tank == "D"] <- "1"
+data_cw$Rep[data_cw$Tank == "E"] <- "2"
+data_cw$Rep[data_cw$Tank == "F"] <- "2"
+data_cw$Rep[data_cw$Tank == "G"] <- "2"
+data_cw$Rep[data_cw$Tank == "H"] <- "2"
+data_cw$Tank <- NULL
+data_cw
+head(data_cw)
+data_cw_1 <- data_cw
+data_cw_2 <- data_cw
+data_cw_3 <- data_cw
+data_cw_1$Coral.Watch.Color2 <- NULL
+data_cw_1$Coral.Watch.Color3 <- NULL
+data_cw_2$Coral.Watch.Color1 <- NULL
+data_cw_2$Coral.Watch.Color3 <- NULL
+data_cw_3$Coral.Watch.Color1 <- NULL
+data_cw_3$Coral.Watch.Color2 <- NULL
+
+data_normalized_CW1 <- spread(data_cw_1, Ramp, Coral.Watch.Color1)
+head(data_normalized_CW1)
+data_normalized_CW2 <- spread(data_cw_2, Ramp, Coral.Watch.Color2)
+head(data_normalized_CW2)
+data_normalized_CW3 <- spread(data_cw_3, Ramp, Coral.Watch.Color3)
+head(data_normalized_CW3)
+
+
+data_normalized_CW2$t35_normalizedto28 <- data_normalized_CW2$`28` - data_normalized_CW2$`35`
+data_normalized_CW3$t35_normalizedto28 <- data_normalized_CW3$`28` - data_normalized_CW3$`35`
+
+ggplot(data=data_normalized_CW2, aes(x=Site, y = t35_normalizedto28, fill = Site))+ 
+  geom_boxplot() + theme_minimal() + 
+  ylab("Color Score of 35C Normalized to Control at T=2 \n (higher = more bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/CW_T2_35C_normalized.pdf", height = 5, width = 8)
+
+
+ggplot(data=data_normalized_CW3, aes(x=Site, y = t35_normalizedto28, fill = Site))+ 
+  geom_boxplot() + theme_minimal() + 
+  ylab("Color Score of 35C Normalized to Control at T=3 \n (higher = more bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/CW_T3_35C_normalized.pdf", height = 5, width = 8)
+
+
+```
+
+
+#PAM Fv/Fm
+
+
+
+PAM data
+
+Raw controls and 35 data 
+
+```{r PAM}
+rm( list = ls())
+graphics.off()
+data <- read.csv("raw data sheets/MasterASData.csv")
+head(data)
+data$Time.point <- as.character(data$Time.point)
+data$Time.point[data$Ramp == "Field"] <- "Field"
+
+
+##########work with this one for PAM
+ggplot(data=data, aes(x=Site, y = PAM..Fv.Fm., fill = Ramp))+ 
+  geom_boxplot() + theme_minimal() + 
+  ylab("PAM Fv/Fm (higher = healthier symbionts)") + xlab("") + theme(axis.text=element_text(size=14))+ ylim(0.5,0.7)
+
+
+data_controls <- data %>%
+  filter(data$Ramp == "28" | data$Ramp == "Field") 
+
+ggplot(data=data_controls, aes(x=Site, y = PAM..Fv.Fm., fill = Site))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("grey55", "sienna1", "coral4")) + 
+  ylab("PAM Fv/Fm (higher = healthier symbionts)") + xlab("") + theme(axis.text=element_text(size=14))
+
+data_hightemp <- data %>%
+  filter(data$Ramp == "35") 
+
+ggplot(data=data_hightemp, aes(x=Site, y = PAM..Fv.Fm., fill = Site))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("sienna1", "coral4")) + ylab("PAM Fv/Fm (higher = healthier symbionts)") + xlab("") + theme(axis.text=element_text(size=14)) + ylim(0.5,0.7)
+
+
+```
+
+
+
+
+```{r PAM_normalized}
+rm( list = ls())
+graphics.off()
+data <- read.csv("raw data sheets/MasterASData.csv")
+head(data)
+data$Time.point <- as.character(data$Time.point)
+data$Time.point[data$Ramp == "Field"] <- "Field"
+
+
+data$Coral.Watch.Color1 <- NULL
+data$Coral.Watch.Color2 <- NULL
+data$Coral.Watch.Color3 <- NULL
+data$AverageRed <- NULL
+data$X <- NULL
+#if tank A-D, rep 1; if tank E-F, rep 2
+data$Rep[data$Tank == "A"] <- "1"
+data$Rep[data$Tank == "B"] <- "1"
+data$Rep[data$Tank == "C"] <- "1"
+data$Rep[data$Tank == "D"] <- "1"
+data$Rep[data$Tank == "E"] <- "2"
+data$Rep[data$Tank == "F"] <- "2"
+data$Rep[data$Tank == "G"] <- "2"
+data$Rep[data$Tank == "H"] <- "2"
+data$Tank <- NULL
+data_normalized <- spread(data, Ramp, PAM..Fv.Fm.)
+head(data_normalized)
+data_normalized$t35_normalizedto28 <- data_normalized$`35` - data_normalized$`28`
+data_normalized$t34_normalizedto28 <- data_normalized$`34` - data_normalized$`28`
+data_normalized$t33_normalizedto28 <- data_normalized$`33` - data_normalized$`28`
+head(data_normalized)
+
+#plots not showing outliers 
+
+ggplot(data=data_normalized, aes(x=Site, y = t33_normalizedto28, fill = Site)) + geom_boxplot() + theme_minimal() + 
+  ylab("PAM Fv/Fm \n 33C normalized to 28C \n (higher = healthier symbionts)") + xlab("") + theme(axis.text=element_text(size=14)) + ylim(-0.15,0.1)
+
+ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/PAM_lowtemps_normalized.pdf", height = 5, width = 8)
+
+ggplot(data=data_normalized, aes(x=Site, y = t34_normalizedto28, fill = Site))+ geom_boxplot() + theme_minimal() + 
+  ylab("PAM Fv/Fm \n 34C normalized to 28C \n (higher = healthier symbionts)") + xlab("") + theme(axis.text=element_text(size=14)) + ylim(-0.15,0.15)
+
+ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/PAM_medtemps_normalized.pdf", height = 5, width = 8)
+
+ggplot(data=data_normalized, aes(x=Site, y = t35_normalizedto28, fill = Site))+ geom_boxplot() + theme_minimal()  + 
+  ylab("PAM Fv/Fm \n 35C normalized to 28C \n (higher = healthier symbionts)") + xlab("") + theme(axis.text=element_text(size=14)) + ylim(-0.15,0.15)
+
+ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/PAM_hightemps_normalized.pdf", height = 5, width = 8)
+
+
+```
+
+```{r PAM_stats}
+library(car)
+library(lmerTest)
+library(emmeans)
+rm( list = ls())
+graphics.off()
+data <- read.csv("raw data sheets/MasterASData.csv")
+head(data)
+data$Time.point <- as.character(data$Time.point)
+data$Time.point[data$Ramp == "Field"] <- "Field"
+data$PAM..Fv.Fm.[data$PAM..Fv.Fm. == 0] <- NA #remove dead corals (0 Fv/Fm)
+head(data)
+
+# Mixed Effects model - random effect of replicate.group
+pam.cbass.model <- lmer(PAM..Fv.Fm. ~ Site * Ramp + (1|Tank), data = data)
+anova(pam.cbass.model) # anova from lmerTest ANOVA SS Type III with ddf="Satterthwaite"
+ranova(pam.cbass.model) # anova-like table for random effects
+
+ggplot(data=data, aes(x=Site, y = PAM..Fv.Fm., fill = Tank))+ geom_boxplot() + theme_minimal()  
+
+# Model fitting and assumptions diagnostic 
+plot(PAM..Fv.Fm. ~ interaction(Site,Ramp,Tank), data = data) 
+# Box-plot homogeinity of variance
+leveneTest(PAM..Fv.Fm. ~ Site * Ramp * Tank, data=data)
+# formal statistical test for homogeinity of variance (not recommended due the small sample size)
+#not signif! 
+plot(pam.cbass.model) # Residual vs Fitted values 
+#looks fine I think
+qqnorm(resid(pam.cbass.model)); qqline(resid(pam.cbass.model)) 
+# qq plot to check for normal distribution of residuals
+#mostly okay?
+hist(resid(pam.cbass.model)) 
+# histogram of residuals to check for normal distribution of residuals
+shapiro.test(resid(pam.cbass.model)) 
+# formal statistical test (not recommended due the small sample size)
+#not normal at all
+
+# comparing between reef sites within each temperature treatment
+pam.cbass.emms.reef <- emmeans(pam.cbass.model, pairwise ~ Site|Ramp, weights = "proportional", adjust="none")
+summary(pam.cbass.emms.reef$emmeans)
+
+```
+
+
 
