@@ -290,12 +290,14 @@ head(data)
 data$Time.point <- as.character(data$Time.point)
 data$Time.point[data$Ramp == "Field"] <- "Field"
 
+data$Ramp <- factor(data$Ramp, levels = c('Field', '28', '33', '34', '35'),ordered = TRUE)
 
-##########work with this one for PAM
+
 ggplot(data=data, aes(x=Site, y = PAM..Fv.Fm., fill = Ramp))+ 
   geom_boxplot() + theme_minimal() + 
-  ylab("PAM Fv/Fm (higher = healthier symbionts)") + xlab("") + theme(axis.text=element_text(size=14))+ ylim(0.5,0.7)
+  ylab("PAM Fv/Fm (higher = healthier symbionts)") + xlab("") + theme(axis.text=element_text(size=14))+ ylim(0.5,0.7) 
 
+ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/PAM_bysiteandtemp.pdf", height = 5, width = 8)
 
 data_controls <- data %>%
   filter(data$Ramp == "28" | data$Ramp == "Field") 
@@ -367,48 +369,6 @@ ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/PAM_h
 
 ```
 
-```{r PAM_stats}
-library(car)
-library(lmerTest)
-library(emmeans)
-rm( list = ls())
-graphics.off()
-data <- read.csv("raw data sheets/MasterASData.csv")
-head(data)
-data$Time.point <- as.character(data$Time.point)
-data$Time.point[data$Ramp == "Field"] <- "Field"
-data$PAM..Fv.Fm.[data$PAM..Fv.Fm. == 0] <- NA #remove dead corals (0 Fv/Fm)
-head(data)
-
-# Mixed Effects model - random effect of replicate.group
-pam.cbass.model <- lmer(PAM..Fv.Fm. ~ Site * Ramp + (1|Tank), data = data)
-anova(pam.cbass.model) # anova from lmerTest ANOVA SS Type III with ddf="Satterthwaite"
-ranova(pam.cbass.model) # anova-like table for random effects
-
-ggplot(data=data, aes(x=Site, y = PAM..Fv.Fm., fill = Tank))+ geom_boxplot() + theme_minimal()  
-
-# Model fitting and assumptions diagnostic 
-plot(PAM..Fv.Fm. ~ interaction(Site,Ramp,Tank), data = data) 
-# Box-plot homogeinity of variance
-leveneTest(PAM..Fv.Fm. ~ Site * Ramp * Tank, data=data)
-# formal statistical test for homogeinity of variance (not recommended due the small sample size)
-#not signif! 
-plot(pam.cbass.model) # Residual vs Fitted values 
-#looks fine I think
-qqnorm(resid(pam.cbass.model)); qqline(resid(pam.cbass.model)) 
-# qq plot to check for normal distribution of residuals
-#mostly okay?
-hist(resid(pam.cbass.model)) 
-# histogram of residuals to check for normal distribution of residuals
-shapiro.test(resid(pam.cbass.model)) 
-# formal statistical test (not recommended due the small sample size)
-#not normal at all
-
-# comparing between reef sites within each temperature treatment
-pam.cbass.emms.reef <- emmeans(pam.cbass.model, pairwise ~ Site|Ramp, weights = "proportional", adjust="none")
-summary(pam.cbass.emms.reef$emmeans)
-
-```
 
 
 

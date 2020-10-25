@@ -1,0 +1,108 @@
+---
+title: "Physiology_stats"
+author: "Melissa Naugle"
+date: "10/24/2020"
+output: html_document
+---
+
+```{r setup}
+setwd(dir = "~/Desktop/GitHub/CBASS_bleachingdata/")
+#rm( list = ls())
+graphics.off()
+library(ggplot2)
+require(plyr)
+library(dplyr)
+library(reshape2)
+library(mosaic)
+library(car)
+library(lmerTest)
+library(emmeans)
+
+data <- read.csv("raw data sheets/MasterASData.csv")
+head(data)
+data$Time.point <- as.character(data$Time.point)
+data$Time.point[data$Ramp == "Field"] <- "Field"
+```
+
+
+
+# Red Intensity 
+
+```{r red}
+
+#first only for recovery 
+data_recov <- data %>%
+  filter(data$Time.point == "Recovery") 
+
+#try to log transform - still no good 
+data_recov$log_averagered = log10(data_recov$AverageRed+1)
+
+# Analysis of variance (2-way) ANOVA CBASS
+red.CBASS.lm <- lm(log_averagered ~ Site * Ramp, data = data_recov)
+Anova(red.CBASS.lm, type = "III")
+
+# Model fitting and assumptions diagnostic 
+plot(log_averagered ~ interaction(Site,Ramp), data = data_recov) # Box-plot homogeinity of variance
+
+leveneTest(log_averagered ~ Site * Ramp, data=data_recov) 
+# formal statistical test for homogeinity of variance
+# signif
+plot(red.CBASS.lm, 1) # Residual vs Fitted values
+qqnorm(resid(red.CBASS.lm)); qqline(resid(red.CBASS.lm)) 
+# qq plot to check for normal distribution of residuals
+#mostly normal 
+#hist(resid(pam.CBASS.lm)) # histogram of residuals to check for normal distribution of residuals
+shapiro.test(red.CBASS.lm$residuals) 
+# formal statistical test (not recommended due the small sample size)
+#not normal 
+
+# post hoc test - Meaningful comparisons
+# Look for differences of reef sites within each temperature condition
+red.CBASS.emms.reef <- emmeans(red.CBASS.lm, pairwise ~ Site|Ramp, type="response", weights = "proportional", adjust="none")
+summary(red.CBASS.emms.reef$emmeans)
+plot(red.CBASS.emms.reef)
+
+# P.value adjustment of Bonferroni for the 9 aforemention comparisons. 
+rbind(red.CBASS.emms.reef$contrasts, adjust="bonferroni")
+
+
+```
+
+
+# PAM
+
+```{r pam}
+
+data$PAM..Fv.Fm.[data$PAM..Fv.Fm. == 0] <- NA #remove dead corals (0 Fv/Fm)
+head(data)
+
+# Mixed Effects model - random effect of replicate.group
+pam.cbass.model <- lmer(PAM..Fv.Fm. ~ Site * Ramp + (1|Tank), data = data)
+anova(pam.cbass.model) # anova from lmerTest ANOVA SS Type III with ddf="Satterthwaite"
+ranova(pam.cbass.model) # anova-like table for random effects
+
+ggplot(data=data, aes(x=Site, y = PAM..Fv.Fm., fill = Tank))+ geom_boxplot() + theme_minimal()  
+
+# Model fitting and assumptions diagnostic 
+plot(PAM..Fv.Fm. ~ interaction(Site,Ramp,Tank), data = data) 
+# Box-plot homogeinity of variance
+leveneTest(PAM..Fv.Fm. ~ Site * Ramp * Tank, data=data)
+# formal statistical test for homogeinity of variance (not recommended due the small sample size)
+#not signif! 
+plot(pam.cbass.model) # Residual vs Fitted values 
+#looks fine I think
+qqnorm(resid(pam.cbass.model)); qqline(resid(pam.cbass.model)) 
+# qq plot to check for normal distribution of residuals
+#mostly okay?
+hist(resid(pam.cbass.model)) 
+# histogram of residuals to check for normal distribution of residuals
+shapiro.test(resid(pam.cbass.model)) 
+# formal statistical test (not recommended due the small sample size)
+#not normal at all
+
+# comparing between reef sites within each temperature treatment
+pam.cbass.emms.reef <- emmeans(pam.cbass.model, pairwise ~ Site|Ramp, weights = "proportional", adjust="none")
+summary(pam.cbass.emms.reef$emmeans)
+
+
+```
