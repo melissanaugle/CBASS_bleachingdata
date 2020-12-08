@@ -81,7 +81,7 @@ ggplot(data, aes(num, lum))+geom_line(aes(colour=site))+
 
 data_stats <- data %>%
   group_by(site) %>%
-  summarise(mintemp = min(temp), maxtemp = max(temp), avgtemp = mean(temp)) 
+  summarise(mintemp = min(temp), maxtemp = max(temp), avgtemp = mean(temp), sdtemp = sd(temp)) 
 head(data_stats)
 
 

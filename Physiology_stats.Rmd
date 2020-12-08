@@ -5,9 +5,12 @@ date: "10/24/2020"
 output: html_document
 ---
 
+#Load packages and data
+
 ```{r setup}
+#change this to your working directory
 setwd(dir = "~/Desktop/GitHub/CBASS_bleachingdata/")
-#rm( list = ls())
+rm( list = ls())
 graphics.off()
 library(ggplot2)
 require(plyr)
@@ -17,10 +20,12 @@ library(mosaic)
 library(car)
 library(lmerTest)
 library(emmeans)
+library(ggpubr)
 
 data <- read.csv("raw data sheets/MasterASData.csv")
 head(data)
 data$Time.point <- as.character(data$Time.point)
+#insert "field" into timepoint for field collected corals
 data$Time.point[data$Ramp == "Field"] <- "Field"
 ```
 
@@ -28,45 +33,193 @@ data$Time.point[data$Ramp == "Field"] <- "Field"
 
 # Red Intensity 
 
-```{r red}
+I am asking: 
+1. Are there differences in red intensity in corals at diff temperature treatments? (4 temp treatments (28,32,33,34))
+2. Are there differences in red intensity in corals from diff sites (5 sites)?
 
-#first only for recovery 
+First, subset only recovery data, since more likely to see diffs at the second time point (more time for corals to bleach)
+
+Then check assumptions of normality and HOV
+
+```{r redintensity}
+
+#first subset only recovery data (time point 2)
+#recovery/time point2 data more likely to show diffs
 data_recov <- data %>%
   filter(data$Time.point == "Recovery") 
 
-#try to log transform - still no good 
-data_recov$log_averagered = log10(data_recov$AverageRed+1)
+#remove NAs
+data_recov <- data_recov[!is.na(data_recov$AverageRed), ]
+
+#sample sizes
+#nrow(subset(data_recov, Ramp == "28"))
+#total: n = 319
+#28C: n = 79
+#33C: n = 80 
+#34C: n = 80 
+#35C: n = 80 
+#Coconut Point: n = 63
+#Cannery: n = 64
+#Faga'tele: n = 64
+#Faga'alu: n = 64
+#Vatia: n = 64
+
+
+#plot data
+ggplot(data=data_recov, aes(x=Site, y=AverageRed))+ geom_boxplot()
+#variances look mostly equal?
+
+#check assumptions
+#normality
+hist(data_recov$AverageRed) #kinda normal?
+ggdensity(data_recov$AverageRed) #looks a little skewed
+ggqqplot(data_recov$AverageRed) #mostly normal but trails at ends
+shapiro.test(data_recov$AverageRed)
+#not even close to normal 
+#p = 5.795e-06
+
+#equality of variances
+bartlett.test(AverageRed ~ Site, data=data_recov)
+#not equal
+# p = 0.01694
+
+
+```
+
+#Transformations
+
+Since normality and variance assumptions are not passing, maybe we can try some transformations?
+Here I try:
+-log transform
+-sqrt transform
+-forth route transform
+
+Then I try to subset data and check for normality within treatments (sites)
+
+None of these produce normal data that pass Shapiro test or equal variance data that pass Bartlett test 
+
+
+```{r transformdata_redintensity}
+#try to log transform  
+data_recov$log_averagered = as.numeric(log10(data_recov$AverageRed+1))
+hist(data_recov$log_averagered)
+shapiro.test(data_recov$log_averagered)
+#not normal 
+#p = 2.36e-13
+bartlett.test(log_averagered ~ Site, data=data_recov)
+#not equal
+# p = 3.347e-08
+
+#try to sqrt transform  
+data_recov$sqrt_averagered = as.numeric(sqrt(data_recov$AverageRed))
+hist(data_recov$sqrt_averagered)
+shapiro.test(data_recov$sqrt_averagered)
+#not normal 
+#p = 2.09e-09
+bartlett.test(sqrt_averagered ~ Site, data=data_recov)
+# p = 0.0001451
+leveneTest(sqrt_averagered ~ Site * Ramp, data=data_recov) 
+# p = 0.0006036
+#not equal
+
+#try forthrt transform  
+data_recov$frt_averagered = as.numeric((data_recov$AverageRed)^(1/4))
+hist(data_recov$frt_averagered)
+shapiro.test(data_recov$frt_averagered)
+#not normal 
+#p = 2.239e-11
+bartlett.test(frt_averagered ~ Site, data=data_recov)
+# p = 3.519e-06
+leveneTest(frt_averagered ~ Site * Ramp, data=data_recov) 
+# p = 0.0001629
+#not equal
+
+#since no transformations are producing normal data, we can subset the data and check for normality 
+#no luck here
+Tele <- subset(data_recov,Site == "Faga'tele")
+hist(Tele$AverageRed)
+shapiro.test(Tele$AverageRed)
+#not normal (but closer)
+#p = 0.002296 
+Tele$log_averagered = log10(Tele$AverageRed + 1)
+hist(Tele$log_averagered)
+hist(Tele$sqrt_averagered)
+shapiro.test(Tele$log_averagered)
+#not normal 
+#p = 0.0002407 
+Tele$sqrt_averagered = sqrt(Tele$AverageRed)
+shapiro.test(Tele$sqrt_averagered)
+#not normal 
+#p = 0.0008184 
+
+```
+
+#Maybe just assume data are normal enough??
+
+Here I just disregard the assumptions and proceed with an ANOVA to test red intensity (bleaching) at time point 2 by site among 5 sites 
+
+Then I look for normality and HOV among the residuals. They maybe don't look so bad? 
+
+```{r anova}
+#assume that it's okay to ignore that data are not normal and variances are not equal
+#try an ANOVA 
 
 # Analysis of variance (2-way) ANOVA CBASS
-red.CBASS.lm <- lm(log_averagered ~ Site * Ramp, data = data_recov)
+red.CBASS.lm <- lm(AverageRed ~ Site * Ramp, data = data_recov)
 Anova(red.CBASS.lm, type = "III")
+#site is signif (p = 2.9e-06)
+#temp is signif (p = 2.6e-13)
+#interaction of site and ramp is not signif 
+
+#since the interaction is not signif, we can run ANOVA without interaction
+red.CBASS.lm <- lm(AverageRed ~ Site + Ramp, data = data_recov)
+Anova(red.CBASS.lm, type = "III")
+#site signif (p = 2.2e-16)
+#temp signif (p = 2.2e-16)
 
 # Model fitting and assumptions diagnostic 
-plot(log_averagered ~ interaction(Site,Ramp), data = data_recov) # Box-plot homogeinity of variance
+plot(AverageRed ~ interaction(Site,Ramp), data = data_recov) # Box-plot homogeneity of variance
+#I think this looks mostly okay?
 
-leveneTest(log_averagered ~ Site * Ramp, data=data_recov) 
-# formal statistical test for homogeinity of variance
-# signif
+leveneTest(AverageRed ~ Site * Ramp, data=data_recov) 
+# not equal (p = 0.004486)
+
+#plot residuals 
 plot(red.CBASS.lm, 1) # Residual vs Fitted values
 qqnorm(resid(red.CBASS.lm)); qqline(resid(red.CBASS.lm)) 
-# qq plot to check for normal distribution of residuals
 #mostly normal 
-#hist(resid(pam.CBASS.lm)) # histogram of residuals to check for normal distribution of residuals
+hist(resid(red.CBASS.lm)) 
+#looks perfectly normal
 shapiro.test(red.CBASS.lm$residuals) 
-# formal statistical test (not recommended due the small sample size)
-#not normal 
+#formal statistical test (not recommended due the small sample size)
+#not normal, but closer
+#p = 0.0185
 
-# post hoc test - Meaningful comparisons
+# post-hoc test - Meaningful comparisons
 # Look for differences of reef sites within each temperature condition
 red.CBASS.emms.reef <- emmeans(red.CBASS.lm, pairwise ~ Site|Ramp, type="response", weights = "proportional", adjust="none")
 summary(red.CBASS.emms.reef$emmeans)
 plot(red.CBASS.emms.reef)
+# P.value adjustment of Bonferroni for the aforemention comparisons. 
+rbind(red.CBASS.emms.reef$contrasts, adjust="bonferroni")
 
-# P.value adjustment of Bonferroni for the 9 aforemention comparisons. 
+#Look for diffs among temps within sites
+red.CBASS.emms.reef <- emmeans(red.CBASS.lm, pairwise ~ Ramp|Site, type="response", weights = "proportional", adjust="none")
+summary(red.CBASS.emms.reef$emmeans)
+plot(red.CBASS.emms.reef)
+# P.value adjustment of Bonferroni for the aforemention comparisons. 
 rbind(red.CBASS.emms.reef$contrasts, adjust="bonferroni")
 
 
 ```
+
+
+
+
+
+
+##Ignore everything below here -------------------------------------------------------------------
+
 
 
 # PAM

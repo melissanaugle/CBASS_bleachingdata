@@ -34,6 +34,31 @@ head(data)
 data$Time.point <- as.character(data$Time.point)
 data$Time.point[data$Ramp == "Field"] <- "Field"
 
+#plot all temps at stress
+
+data_stress <- data %>%
+  filter(data$Time.point == "Stress") 
+
+ggplot(data=data_stress, aes(x=Site, y = AverageRed, fill = Ramp))+ 
+  geom_boxplot() + theme_minimal()  + scale_fill_manual(values = c("dodgerblue4", "cyan4", "springgreen3", "yellow2"))  +
+  ylab("Average Red Intensity \n Stress Time Point \n (Higher = more bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/AvgRed_stress.pdf", height = 5, width = 8)
+
+#plot all temps at recovery 
+
+data_recovery <- data %>%
+  filter(data$Time.point == "Recovery") 
+
+ggplot(data=data_recovery, aes(x=Site, y = AverageRed, fill = Ramp))+ 
+  geom_boxplot() + theme_minimal()  + scale_fill_manual(values = c("dodgerblue4", "cyan4", "springgreen3", "yellow2"))  +
+  ylab("Average Red Intensity \n Recovery Time Point \n (Higher = more bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/AvgRed_recovery.pdf", height = 5, width = 8)
+
+
+
+
 #filter out only controls
 data_controls <- data %>%
   filter(data$Ramp == "28" | data$Ramp == "Field") 
@@ -159,6 +184,19 @@ data$CWchange1 <- data$Coral.Watch.Color1 - data$Coral.Watch.Color2
 data$CWchange2 <- data$Coral.Watch.Color1 - data$Coral.Watch.Color3
 
 data$Time.point <- factor(data$Time.point, levels = c('Field', 'Stress', 'Recovery'),ordered = TRUE)
+
+ggplot(data=data, aes(x=Site, y = CWchange1, fill = Ramp))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("dodgerblue4", "cyan4", "springgreen3", "yellow2")) + 
+  ylab("Color Score T1 - T2 \n (higher = more bleached, lower = less bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/CW_all_T1-T2_raw.pdf", height = 5, width = 8)
+
+ggplot(data=data, aes(x=Site, y = CWchange2, fill = Ramp))+ 
+  geom_boxplot() + theme_minimal() + scale_fill_manual(values = c("dodgerblue4", "cyan4", "springgreen3", "yellow2")) + 
+  ylab("Color Score T1 - T3 \n (higher = more bleached, lower = less bleached)") + xlab("") + theme(axis.text=element_text(size=14))
+
+ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/10232020/CW_all_T1-T3_raw.pdf", height = 5, width = 8)
+
 
 data_controls <- data %>%
   filter(data$Ramp == "28" | data$Ramp == "Field") 
