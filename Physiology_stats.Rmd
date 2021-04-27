@@ -13,7 +13,7 @@ setwd(dir = "~/Desktop/GitHub/CBASS_bleachingdata/")
 rm( list = ls())
 graphics.off()
 library(ggplot2)
-require(plyr)
+library(plyr)
 library(dplyr)
 library(reshape2)
 library(mosaic)
@@ -21,17 +21,26 @@ library(car)
 library(lmerTest)
 library(emmeans)
 library(ggpubr)
+library(tidyr)
 
 data <- read.csv("raw data sheets/MasterASData.csv")
 head(data)
 data$Time.point <- as.character(data$Time.point)
 #insert "field" into timepoint for field collected corals
 data$Time.point[data$Ramp == "Field"] <- "Field"
+
+#first subset only recovery data (time point 2)
+#recovery/time point2 data more likely to show diffs
+data_recov <- data %>%
+  filter(data$Time.point == "Recovery") 
+
+#remove NAs
+data_recov <- data_recov[!is.na(data_recov$AverageRed), ]
 ```
 
 
 
-# Red Intensity 
+# Red Intensity - Not meeting assumptions
 
 I am asking: 
 1. Are there differences in red intensity in corals at diff temperature treatments? (4 temp treatments (28,32,33,34))
@@ -42,14 +51,6 @@ First, subset only recovery data, since more likely to see diffs at the second t
 Then check assumptions of normality and HOV
 
 ```{r redintensity}
-
-#first subset only recovery data (time point 2)
-#recovery/time point2 data more likely to show diffs
-data_recov <- data %>%
-  filter(data$Time.point == "Recovery") 
-
-#remove NAs
-data_recov <- data_recov[!is.na(data_recov$AverageRed), ]
 
 #sample sizes
 #nrow(subset(data_recov, Ramp == "28"))
@@ -66,7 +67,7 @@ data_recov <- data_recov[!is.na(data_recov$AverageRed), ]
 
 
 #plot data
-ggplot(data=data_recov, aes(x=Site, y=AverageRed))+ geom_boxplot()
+ggplot(data=data_recov, aes(x=Site, y=AverageRed, fill = Ramp))+ geom_boxplot()
 #variances look mostly equal?
 
 #check assumptions
@@ -86,103 +87,107 @@ bartlett.test(AverageRed ~ Site, data=data_recov)
 
 ```
 
-#Transformations
 
-Since normality and variance assumptions are not passing, maybe we can try some transformations?
-Here I try:
--log transform
--sqrt transform
--forth route transform
+#Normalized Red Data and ANOVA
 
-Then I try to subset data and check for normality within treatments (sites)
+Questions:
+Is the non-equal variance an issue? 
+-Bartlett test shows p = 0.02155 for variances among sites 
+(try kriskal wallis?? and say 'okay this shows the same thing' and can also try bootstrap as well)
 
-None of these produce normal data that pass Shapiro test or equal variance data that pass Bartlett test 
+*try one factor anova to confirm!
+*what to do about outliers! can we drop some 
 
+```{r normalized}
 
-```{r transformdata_redintensity}
-#try to log transform  
-data_recov$log_averagered = as.numeric(log10(data_recov$AverageRed+1))
-hist(data_recov$log_averagered)
-shapiro.test(data_recov$log_averagered)
-#not normal 
-#p = 2.36e-13
-bartlett.test(log_averagered ~ Site, data=data_recov)
+data <- data_recov
+data$Coral.Watch.Color1 <- NULL
+data$Coral.Watch.Color2 <- NULL
+data$Coral.Watch.Color3 <- NULL
+data$PAM..Fv.Fm. <- NULL
+data$X <- NULL
+#if tank A-D, rep 1; if tank E-F, rep 2
+data$Rep[data$Tank == "A"] <- "1"
+data$Rep[data$Tank == "B"] <- "1"
+data$Rep[data$Tank == "C"] <- "1"
+data$Rep[data$Tank == "D"] <- "1"
+data$Rep[data$Tank == "E"] <- "2"
+data$Rep[data$Tank == "F"] <- "2"
+data$Rep[data$Tank == "G"] <- "2"
+data$Rep[data$Tank == "H"] <- "2"
+data$Tank <- NULL
+data_normalized <- spread(data, Ramp, AverageRed)
+head(data_normalized)
+data_normalized$t35_normalizedto28 <- data_normalized$`35` - data_normalized$`28`
+data_normalized$t34_normalizedto28 <- data_normalized$`34` - data_normalized$`28`
+data_normalized$t33_normalizedto28 <- data_normalized$`33` - data_normalized$`28`
+head(data_normalized)
+
+#now try checking assumptions
+
+#plot data
+data_norm <- gather(data_normalized, Ramp, AverageRed, t35_normalizedto28:t33_normalizedto28)
+ggplot(data=data_norm, aes(x=Site, y=AverageRed, fill = Ramp))+ geom_boxplot() + 
+  theme_bw() + ylab("Red Intensity \n (normalized to controls at 28C)") + xlab("") + scale_fill_discrete(name = "Treatment", labels = c("33C", "34C", "35C"))  + scale_fill_manual(values = c("dodgerblue4", "springgreen3", "yellow2"), name = "Treatment", labels = c("33C", "34C", "35C"))
+
+#ggsave("t2_red_normalized.pdf", width = 6, height = 4)
+
+#check assumptions
+#normality
+hist(data_norm$AverageRed) #looks normal!
+ggdensity(data_norm$AverageRed) #looks normal
+ggqqplot(data_norm$AverageRed) #looks normal!
+shapiro.test(data_norm$AverageRed)
+#normal!!!!
+
+#equality of variances
+bartlett.test(AverageRed ~ Site, data=data_norm)
 #not equal
-# p = 3.347e-08
+# p = 0.02155
+bartlett.test(AverageRed ~ Ramp, data=data_norm)
+#equal by ramp
+leveneTest(AverageRed ~ Site * Ramp, data=data_norm) 
+#equal with both
 
-#try to sqrt transform  
-data_recov$sqrt_averagered = as.numeric(sqrt(data_recov$AverageRed))
-hist(data_recov$sqrt_averagered)
-shapiro.test(data_recov$sqrt_averagered)
-#not normal 
-#p = 2.09e-09
-bartlett.test(sqrt_averagered ~ Site, data=data_recov)
-# p = 0.0001451
-leveneTest(sqrt_averagered ~ Site * Ramp, data=data_recov) 
-# p = 0.0006036
-#not equal
+data_norm$AverageRed_log <- as.numeric(log10(data_norm$AverageRed +1))
+data_norm$AverageRed_sqrt <- as.numeric(sqrt(data_norm$AverageRed))
+bartlett.test(AverageRed_log ~ Site, data=data_norm)
+bartlett.test(AverageRed_sqrt ~ Site, data=data_norm)
+#does this mean I should sqrt transform data ??
 
-#try forthrt transform  
-data_recov$frt_averagered = as.numeric((data_recov$AverageRed)^(1/4))
-hist(data_recov$frt_averagered)
-shapiro.test(data_recov$frt_averagered)
-#not normal 
-#p = 2.239e-11
-bartlett.test(frt_averagered ~ Site, data=data_recov)
-# p = 3.519e-06
-leveneTest(frt_averagered ~ Site * Ramp, data=data_recov) 
-# p = 0.0001629
-#not equal
-
-#since no transformations are producing normal data, we can subset the data and check for normality 
-#no luck here
-Tele <- subset(data_recov,Site == "Faga'tele")
-hist(Tele$AverageRed)
-shapiro.test(Tele$AverageRed)
-#not normal (but closer)
-#p = 0.002296 
-Tele$log_averagered = log10(Tele$AverageRed + 1)
-hist(Tele$log_averagered)
-hist(Tele$sqrt_averagered)
-shapiro.test(Tele$log_averagered)
-#not normal 
-#p = 0.0002407 
-Tele$sqrt_averagered = sqrt(Tele$AverageRed)
-shapiro.test(Tele$sqrt_averagered)
-#not normal 
-#p = 0.0008184 
-
+write.csv(data_normalized, "~/Desktop/GitHub/CBASS_bleachingdata/raw data sheets/AverageRedData_normalized.csv", row.names = F)
 ```
 
-#Maybe just assume data are normal enough??
+Now we run an ANOVA on the normalized data
 
-Here I just disregard the assumptions and proceed with an ANOVA to test red intensity (bleaching) at time point 2 by site among 5 sites 
+Questions:
+Two different post-hoc tests give different returns?
+-Emmeans with bonferoni shows no signif diffs among sites (even though signif p value for site on ANOVA)
+-tukey hsd give two signif diffs (Vatia-tele and Vatia-cannery)
+#say this is how we are testing so far 
 
-Then I look for normality and HOV among the residuals. They maybe don't look so bad? 
 
-```{r anova}
-#assume that it's okay to ignore that data are not normal and variances are not equal
-#try an ANOVA 
+```{r normalANOVA}
 
 # Analysis of variance (2-way) ANOVA CBASS
-red.CBASS.lm <- lm(AverageRed ~ Site * Ramp, data = data_recov)
+red.CBASS.lm <- lm(AverageRed ~ Site * Ramp, data = data_norm)
 Anova(red.CBASS.lm, type = "III")
-#site is signif (p = 2.9e-06)
-#temp is signif (p = 2.6e-13)
-#interaction of site and ramp is not signif 
+#site is not signif (p = 0.7818383)
+#temp is signif (p = 0.0004361)
+#interaction of site and ramp is not signif (p = 0.3948698)
 
 #since the interaction is not signif, we can run ANOVA without interaction
-red.CBASS.lm <- lm(AverageRed ~ Site + Ramp, data = data_recov)
+red.CBASS.lm <- lm(AverageRed ~ Site + Ramp, data = data_norm)
 Anova(red.CBASS.lm, type = "III")
-#site signif (p = 2.2e-16)
-#temp signif (p = 2.2e-16)
+#site signif (p = 0.02162)
+#temp signif (p = 5.043e-05)
 
 # Model fitting and assumptions diagnostic 
-plot(AverageRed ~ interaction(Site,Ramp), data = data_recov) # Box-plot homogeneity of variance
+plot(AverageRed ~ interaction(Site,Ramp), data = data_norm) # Box-plot homogeneity of variance
 #I think this looks mostly okay?
 
-leveneTest(AverageRed ~ Site * Ramp, data=data_recov) 
-# not equal (p = 0.004486)
+leveneTest(AverageRed ~ Site * Ramp, data=data_norm) 
+# equal (p = 0.104)
 
 #plot residuals 
 plot(red.CBASS.lm, 1) # Residual vs Fitted values
@@ -191,17 +196,19 @@ qqnorm(resid(red.CBASS.lm)); qqline(resid(red.CBASS.lm))
 hist(resid(red.CBASS.lm)) 
 #looks perfectly normal
 shapiro.test(red.CBASS.lm$residuals) 
-#formal statistical test (not recommended due the small sample size)
-#not normal, but closer
-#p = 0.0185
+#very normal
+#0.7882
 
 # post-hoc test - Meaningful comparisons
+
 # Look for differences of reef sites within each temperature condition
 red.CBASS.emms.reef <- emmeans(red.CBASS.lm, pairwise ~ Site|Ramp, type="response", weights = "proportional", adjust="none")
 summary(red.CBASS.emms.reef$emmeans)
 plot(red.CBASS.emms.reef)
 # P.value adjustment of Bonferroni for the aforemention comparisons. 
 rbind(red.CBASS.emms.reef$contrasts, adjust="bonferroni")
+#some are close to significance at 0.09 (Vatia v Fagatele) but none are <0.05?
+# so no signif diffs?
 
 #Look for diffs among temps within sites
 red.CBASS.emms.reef <- emmeans(red.CBASS.lm, pairwise ~ Ramp|Site, type="response", weights = "proportional", adjust="none")
@@ -209,7 +216,247 @@ summary(red.CBASS.emms.reef$emmeans)
 plot(red.CBASS.emms.reef)
 # P.value adjustment of Bonferroni for the aforemention comparisons. 
 rbind(red.CBASS.emms.reef$contrasts, adjust="bonferroni")
+#33 is diff than 34 and 35 across all sites
 
+# try tukey post hoc 
+tukey <- TukeyHSD(red.CBASS.lm)
+plot(tukey)
+tukey
+#shows signif diffs for: 
+#site: vatia-cannery and vatia-fagatele
+#temp: 33 is diff than 34 and 35
+
+```
+
+#PAM
+
+Normalize PAM data first, then run ANOVA in next chunk
+
+
+```{r pam}
+
+data <- read.csv("raw data sheets/MasterASData.csv")
+data$Time.point <- as.character(data$Time.point)
+#insert "field" into timepoint for field collected corals
+data$Time.point[data$Ramp == "Field"] <- "Field"
+
+head(data)
+
+data$Coral.Watch.Color1 <- NULL
+data$Coral.Watch.Color2 <- NULL
+data$Coral.Watch.Color3 <- NULL
+data$AverageRed <- NULL
+data$X <- NULL
+#if tank A-D, rep 1; if tank E-F, rep 2
+data$Rep[data$Tank == "A"] <- "1"
+data$Rep[data$Tank == "B"] <- "1"
+data$Rep[data$Tank == "C"] <- "1"
+data$Rep[data$Tank == "D"] <- "1"
+data$Rep[data$Tank == "E"] <- "2"
+data$Rep[data$Tank == "F"] <- "2"
+data$Rep[data$Tank == "G"] <- "2"
+data$Rep[data$Tank == "H"] <- "2"
+data$Tank <- NULL
+data_normalized <- spread(data, Ramp, PAM..Fv.Fm.)
+head(data_normalized)
+data_normalized$t35_normalizedto28 <- data_normalized$`35` - data_normalized$`28`
+data_normalized$t34_normalizedto28 <- data_normalized$`34` - data_normalized$`28`
+data_normalized$t33_normalizedto28 <- data_normalized$`33` - data_normalized$`28`
+head(data_normalized) #missing values for field samples and for stress for rep 2
+#remove nas 
+data_norm <- data_normalized[complete.cases(data_normalized[ , 13:15]),]
+
+write.csv(data_norm, "~/Desktop/GitHub/CBASS_bleachingdata/raw data sheets/PAM_data_normalized.csv", row.names = F)
+
+#now try checking assumptions
+
+#plot data
+data_norm2 <- gather(data_norm, Ramp, PAM..Fv.Fm., t35_normalizedto28:t33_normalizedto28)
+ggplot(data=data_norm2, aes(x=Site, y=PAM..Fv.Fm., fill = Ramp))+ geom_boxplot() + 
+  theme_bw() + ylab("Red Intensity \n (normalized to controls at 28C)") + xlab("") + scale_fill_discrete(name = "Treatment", labels = c("33C", "34C", "35C"))  + scale_fill_manual(values = c("dodgerblue4", "springgreen3", "yellow2"), name = "Treatment", labels = c("33C", "34C", "35C"))
+
+#remove those 4 outliers, where pam value = 0
+nrow(data_norm2)
+data_norm2 <- data_norm2[!(data_norm2$PAM..Fv.Fm. < -0.5),]
+nrow(data_norm2)
+#removed 4 rows 
+
+data_norm2
+
+#plot data
+ggplot(data=data_norm2, aes(x=Site, y=PAM..Fv.Fm., fill = Ramp))+ geom_boxplot() + 
+  theme_bw() + ylab("Red Intensity \n (normalized to controls at 28C)") + xlab("") + scale_fill_discrete(name = "Treatment", labels = c("33C", "34C", "35C"))  + scale_fill_manual(values = c("dodgerblue4", "springgreen3", "yellow2"), name = "Treatment", labels = c("33C", "34C", "35C"))
+
+
+#ggsave("t2_pam_normalized.pdf", width = 6, height = 4)
+
+#check assumptions
+#normality
+hist(data_norm2$PAM..Fv.Fm.) #looks normal!
+ggdensity(data_norm2$PAM..Fv.Fm.) #looks normal
+ggqqplot(data_norm2$PAM..Fv.Fm.) #looks mostly normal!
+shapiro.test(data_norm2$PAM..Fv.Fm.)
+#not normal but kinda close!! p = 0.02
+data_norm2$PAM..Fv.Fm._sqrt <- sqrt(data_norm2$PAM..Fv.Fm.)
+shapiro.test(data_norm2$PAM..Fv.Fm._sqrt)
+#sooo transform this too?
+
+#equality of variances
+bartlett.test(PAM..Fv.Fm. ~ Site, data=data_norm2)
+leveneTest(PAM..Fv.Fm. ~ Site, data=data_norm2)
+#equal
+
+#no transformations help w this :(
+```
+Run ANOVA on normalized PAM data 
+
+Questions:
+-How weird that temperature isn't significant, but site is?
+-Is it a problem that residuals are not normal at all ( p ~ 0.002), since normality met on raw normalized data 
+-Tukey hsd shows signif diffs (tele-alu)
+
+
+```{r norm_pam_ANOVA}
+
+# Analysis of variance (2-way) ANOVA CBASS
+pam.CBASS.lm <- lm(PAM..Fv.Fm. ~ Site * Ramp, data = data_norm2)
+Anova(pam.CBASS.lm, type = "III")
+#site is not signif 
+#temp is not signif 
+#interaction of site and ramp is not signif (p = 0.3948698)
+
+#since the interaction is not signif, we can run ANOVA without interaction
+pam.CBASS.lm <- lm(PAM..Fv.Fm. ~ Site + Ramp, data = data_norm2)
+Anova(pam.CBASS.lm, type = "III")
+#site signif (p = 0.01626)
+#temp not signif (weird)
+
+# Model fitting and assumptions diagnostic 
+plot(PAM..Fv.Fm. ~ interaction(Site,Ramp), data = data_norm2) # Box-plot homogeneity of variance
+#I think this looks mostly okay?
+
+leveneTest(PAM..Fv.Fm. ~ Site * Ramp, data=data_norm2) 
+# equal 
+
+#plot residuals 
+plot(pam.CBASS.lm, 1) # Residual vs Fitted values
+qqnorm(resid(pam.CBASS.lm)); qqline(resid(pam.CBASS.lm)) 
+#mostly normal 
+hist(resid(pam.CBASS.lm)) 
+#looks mostly normal
+shapiro.test(pam.CBASS.lm$residuals) 
+#not normal
+
+# try tukey post hoc 
+tukey <- TukeyHSD(pam.CBASS.lm)
+plot(tukey)
+tukey
+#shows signif diffs for: 
+#site: fagatele-fagaalu
+
+
+```
+
+## Color Card
+
+```{r colorcard}
+
+data <- read.csv("raw data sheets/MasterASData.csv")
+data_cw <- data
+head(data_cw)
+data_cw$AverageRed <- NULL
+data_cw$PAM..Fv.Fm. <- NULL
+data_cw$X <- NULL
+#if tank A-D, rep 1; if tank E-F, rep 2
+data_cw$Rep[data_cw$Tank == "A"] <- "1"
+data_cw$Rep[data_cw$Tank == "B"] <- "1"
+data_cw$Rep[data_cw$Tank == "C"] <- "1"
+data_cw$Rep[data_cw$Tank == "D"] <- "1"
+data_cw$Rep[data_cw$Tank == "E"] <- "2"
+data_cw$Rep[data_cw$Tank == "F"] <- "2"
+data_cw$Rep[data_cw$Tank == "G"] <- "2"
+data_cw$Rep[data_cw$Tank == "H"] <- "2"
+data_cw$Tank <- NULL
+data_cw
+head(data_cw)
+data_cw_1 <- data_cw
+data_cw_2 <- data_cw
+data_cw_3 <- data_cw
+data_cw_1$Coral.Watch.Color2 <- NULL
+data_cw_1$Coral.Watch.Color3 <- NULL
+data_cw_2$Coral.Watch.Color1 <- NULL
+data_cw_2$Coral.Watch.Color3 <- NULL
+data_cw_3$Coral.Watch.Color1 <- NULL
+data_cw_3$Coral.Watch.Color2 <- NULL
+
+data_normalized_CW1 <- spread(data_cw_1, Ramp, Coral.Watch.Color1)
+head(data_normalized_CW1)
+data_normalized_CW2 <- spread(data_cw_2, Ramp, Coral.Watch.Color2)
+head(data_normalized_CW2)
+data_normalized_CW3 <- spread(data_cw_3, Ramp, Coral.Watch.Color3)
+head(data_normalized_CW3)
+
+
+data_normalized_CW2$t35_normalizedto28 <- data_normalized_CW2$`28` - data_normalized_CW2$`35`
+data_normalized_CW3$t35_normalizedto28 <- data_normalized_CW3$`28` - data_normalized_CW3$`35`
+data_normalized_CW3$t34_normalizedto28 <- data_normalized_CW3$`28` - data_normalized_CW3$`34`
+data_normalized_CW3$t33_normalizedto28 <- data_normalized_CW3$`28` - data_normalized_CW3$`33`
+
+#T3
+
+data_normalized <- data_normalized_CW3
+
+data_normalized$StressRecovTimePoint <- data_normalized$Time.point
+data_normalized$Time.point <- NULL
+
+data_normalized_gather <- pivot_longer(data_normalized, cols = starts_with("t"), names_to = "temperature_norm", values_to = "colorcard" )
+data_normalized_gather <- data_normalized_gather[!is.na(data_normalized_gather$colorcard),]
+
+
+#check assumptions
+#normality
+hist(data_normalized_gather$colorcard) #looks normal!
+ggdensity(data_normalized_gather$colorcard) #looks normal
+ggqqplot(data_normalized_gather$colorcard) #looks mostly normal!
+shapiro.test(data_normalized_gather$colorcard)
+#not normal but kinda close!! p = 0.001012
+
+data_normalized_gather$colorcard_sqrt <- sqrt(data_normalized_gather$colorcard)
+shapiro.test(data_normalized_gather$colorcard_sqrt)
+#nope
+
+#equality of variances
+leveneTest(colorcard ~ Site, data=data_normalized_gather)
+bartlett.test(colorcard ~ Site, data=data_normalized_gather)
+#equal
+
+#transform 
+data_normalized_gather$log_card = as.numeric(log10(data_normalized_gather$colorcard + 1))
+hist(data_normalized_gather$log_card)
+shapiro.test(data_normalized_gather$log_card)
+#no
+
+#what to do if no transformations work??
+
+# Analysis of variance (2-way) ANOVA CBASS
+colorcard.lm <- lm(colorcard ~ Site * temperature_norm, data = data_normalized_gather)
+Anova(colorcard.lm, type = "III")
+
+#plot residuals 
+plot(colorcard.lm, 1) # Residual vs Fitted values
+qqnorm(resid(colorcard.lm)); qqline(resid(colorcard.lm)) 
+#mostly normal 
+hist(resid(colorcard.lm)) 
+#looks mostly normal
+shapiro.test(colorcard.lm$residuals) 
+#normal
+
+# try tukey post hoc 
+tukey <- TukeyHSD(colorcard.lm)
+plot(tukey)
+tukey
+#shows signif diffs for: 
+#site: fagatele-fagaalu
 
 ```
 
@@ -217,12 +464,8 @@ rbind(red.CBASS.emms.reef$contrasts, adjust="bonferroni")
 
 
 
-
 ##Ignore everything below here -------------------------------------------------------------------
 
-
-
-# PAM
 
 ```{r pam}
 
@@ -259,3 +502,8 @@ summary(pam.cbass.emms.reef$emmeans)
 
 
 ```
+
+
+
+
+

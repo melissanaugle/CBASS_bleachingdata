@@ -1,0 +1,99 @@
+---
+title: "FieldHOBOtemps"
+author: "Melissa Naugle"
+date: "4/15/2021"
+output: html_document
+---
+
+```{r setup}
+
+setwd(dir = "~/Desktop/GitHub/CBASS_bleachingdata/Field HOBO data/")
+rm( list = ls())
+graphics.off()
+library(ggplot2)
+library(ggpubr)
+require(plyr)
+library(dplyr)
+
+```
+
+
+```{r readdata}
+
+cannery <- read.csv("8_18_19_Cannery.csv", skip = 1)
+head(cannery)
+names(cannery) <- c("num", "datetime", "temp", "lum")
+cannery$site <- "Cannery"
+head(cannery)
+tail(cannery)
+nrow(cannery)
+max(cannery$temp)
+#remove first and last 3 hours
+cannery <- cannery[7:519,]
+
+tele <- read.csv("Faga'tele_8_20_2019.csv", skip = 1)
+names(tele) <- c("num", "datetime", "temp", "lum")
+tele$site <- "Faga'tele"
+head(tele)
+min(tele$temp)
+nrow(tele)
+tele <- tele[61:6840,] #remove weird end temps 
+tele = tele[seq(1, nrow(tele), 30), ] #change so its every 30 min like the others, not every 1 min
+nrow(tele)
+tele$num <- c(1:226) 
+head(tele)
+
+vatia <- read.csv("Vatia_8_22_19.csv", skip = 1)
+names(vatia) <- c("num", "datetime", "temp", "lum")
+vatia$site <- "Vatia"
+head(vatia)
+nrow(vatia)
+max(vatia$temp)
+#remove first 3 and last 5 hours
+vatia <- vatia[7:414,] #remove weird end temps 
+
+
+alu <- read.csv("08_19_2019_Faga'Alu.csv", skip =1)
+names(alu) <- c("num", "datetime", "temp", "lum")
+alu$site <- "Faga'alu"
+head(alu)
+nrow(alu)
+#remove first and last 3 hours
+alu <- alu[7:286,]
+
+
+data <- merge(tele, vatia, all = T)
+data <- merge(data, alu, all = T)
+data <- merge(data, cannery, all = T)
+head(data)
+
+```
+
+```{r graph}
+data_stats <- data %>%
+  group_by(site) %>%
+  summarise(mintemp = min(temp), maxtemp = max(temp), avgtemp = mean(temp), sdtemp = sd(temp)) 
+head(data_stats)
+data_stats$Site <- data_stats$site
+data_stats$site <- NULL
+write.csv(data_stats, "/Users/Melissa/Desktop/GitHub/CBASS_bleachingdata/Field HOBO data/temp_stats_full.csv", row.names = F)
+
+head(data)
+data$datetime1 <- format(strptime(data$datetime, '%m/%d/%Y %I:%M:%S %p'), "%m/%d/%Y %H:%M:%S")
+data$datetime2 <- as.POSIXct(data$datetime1, format = "%m/%d/%Y %H:%M:%S")
+
+ggplot(data, aes(datetime2, temp)) + geom_line(aes(color = site)) +
+  ggtitle("") + ylab("Temperature (C˚)")+xlab("") + theme_bw() + scale_x_datetime(breaks = "1 day", date_labels = ("%b %d")) +  theme(axis.text.x =element_text(angle = 45, hjust = 1)) + geom_vline(xintercept = -61548450000, color = "red", linetype = 4, size = 1.1) + geom_vline(xintercept = -61547930000, color = "yellowgreen", linetype = 4, size = 1.1) + geom_vline(xintercept = -61547590000, color = "turquoise3", linetype = 4, size = 1.1) + geom_vline(xintercept = -61547420000, color = "purple", linetype = 4, size = 1.1) 
+
+ggsave("fieldHOBOtemps.png", width = 6, height = 4)
+
+#Cannery 8/10/19
+#Fagaalu 8/16/19
+#tele 8/20/19
+#vatia 8/22 
+ 
+```
+
+
+
+

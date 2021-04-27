@@ -1,0 +1,70 @@
+---
+title: "Temp_phys_analysis"
+author: "Melissa Naugle"
+date: "4/11/2021"
+output: html_document
+---
+
+```{r readdata}
+setwd(dir = "~/Desktop/GitHub/CBASS_bleachingdata/")
+rm( list = ls())
+graphics.off()
+library(ggplot2)
+library(ggpubr)
+require(plyr)
+library(dplyr)
+library(corrplot)
+temp_stats_lengthstandardized <- read.csv("Field HOBO data/temp_stats_lengthstandardized.csv")
+temp_stats_full <- read.csv("Field HOBO data/temp_stats_full.csv")
+pam <- read.csv("raw data sheets/PAM_data_normalized.csv")
+avgred <- read.csv("raw data sheets/AverageRedData_normalized.csv")
+```
+
+
+No clear trend bw any temp characteristics and PAM or Avgred 
+
+```{r analysis}
+
+pam_stats <- pam %>%
+  group_by(Site) %>%
+  summarise(mean_pam_35 = mean(t35_normalizedto28)) 
+
+avgred_stats <- avgred %>%
+  group_by(Site) %>%
+  summarise(mean_avgred_35 = mean(t35_normalizedto28)) 
+
+physdata <- merge(pam_stats, avgred_stats)
+alldata_fulltemps <- merge(physdata, temp_stats_full)
+alldata_standardizedtemps <- merge(physdata, temp_stats_lengthstandardized)
+
+corrplot(cor(alldata_fulltemps[,2:7]))
+corrplot(cor(alldata_standardizedtemps[,2:7]))
+
+
+p1 = ggplot(alldata_standardizedtemps, aes(x=avgtemp)) + geom_line(aes(y=mean_avgred_35), color="blue") + xlab("Average Temp") + ylab("Mean Average Red") + theme_bw()
+p2 = ggplot(alldata_standardizedtemps, aes(x=maxtemp)) + geom_line(aes(y=mean_avgred_35), color="blue") + xlab("Max Temp") + ylab("Mean Average Red") + theme_bw()
+p3 = ggplot(alldata_standardizedtemps, aes(x=mintemp)) + geom_line(aes(y=mean_avgred_35), color="blue") + xlab("Min Temp") + ylab("Mean Average Red") + theme_bw()
+p4 = ggplot(alldata_standardizedtemps, aes(x=sdtemp)) + geom_line(aes(y=mean_avgred_35), color="blue") + xlab("Standard Dev Temp") + ylab("Mean Average Red") + theme_bw()
+ggarrange(p1,p2,p3,p4)
+
+p1 = ggplot(alldata_standardizedtemps, aes(x=avgtemp)) + geom_line(aes(y=mean_pam_35), color="red") + xlab("Average Temp") + ylab("Mean PAM Fv/Fm") + theme_bw()
+p2 = ggplot(alldata_standardizedtemps, aes(x=maxtemp)) + geom_line(aes(y=mean_pam_35), color="red") + xlab("Max Temp") + ylab("Mean PAM Fv/Fm") + theme_bw()
+p3 = ggplot(alldata_standardizedtemps, aes(x=mintemp)) + geom_line(aes(y=mean_pam_35), color="red") + xlab("Min Temp") + ylab("Mean PAM Fv/Fm") + theme_bw()
+p4 = ggplot(alldata_standardizedtemps, aes(x=sdtemp)) + geom_line(aes(y=mean_pam_35), color="red") + xlab("Standard Dev Temp") + ylab("Mean PAM Fv/Fm") + theme_bw()
+ggarrange(p1,p2,p3,p4)
+
+
+
+
+#test
+shapiro.test(alldata_standardizedtemps$avgtemp)
+shapiro.test(alldata_standardizedtemps$mean_avgred_35)
+cor.test(alldata_standardizedtemps$avgtemp, alldata_standardizedtemps$mean_avgred_35, method = "pearson")
+#not signif 
+```
+
+
+
+
+
+
