@@ -176,13 +176,13 @@ data_normalized_gather_recovery_nas <- data_normalized_gather_recovery[!is.na(da
 
 #ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/02152021- normalized to controls/AvgRed_recov_normalized.pdf", height = 5, width = 8)
 
-red_stress <- ggplot(data=data_normalized_gather_stress_nas, aes(x=Site, y = averagered, fill = temperature_norm))+ geom_boxplot(outlier.size = -1) + theme_minimal() + scale_fill_manual(name = "Temperature", labels = c("33C", "34C", "35C"), values = c("mediumseagreen", "darkcyan", "darkgoldenrod")) + ylab("Average Red Intensity") + xlab("") + theme(axis.text=element_text(size=14)) + ggtitle("Heat Stress") + theme(plot.title = element_text(hjust = 0.5))
+red_stress <- ggplot(data=data_normalized_gather_stress_nas, aes(x=Site, y = averagered, fill = temperature_norm))+ geom_boxplot(outlier.size = -1) + theme_minimal() + scale_fill_manual(name = "Temperature", labels = c("33C", "34C", "35C"), values = c("mediumseagreen", "darkcyan", "darkgoldenrod")) + ylab("Normalized Average Red Intensity") + xlab("") + theme(axis.text=element_text(size=14)) + ggtitle("Heat Stress") + theme(plot.title = element_text(hjust = 0.5))
 
-red_recov <- ggplot(data=data_normalized_gather_recovery_nas, aes(x=Site, y = averagered, fill = temperature_norm))+ geom_boxplot(outlier.size = -1) + theme_minimal() + scale_fill_manual(name = "Temperature", labels = c("33C", "34C", "35C"), values = c("mediumseagreen", "darkcyan", "darkgoldenrod")) + ylab("Average Red Intensity") + xlab("") + theme(axis.text=element_text(size=14)) + ggtitle("Recovery") + theme(plot.title = element_text(hjust = 0.5))
+red_recov <- ggplot(data=data_normalized_gather_recovery_nas, aes(x=Site, y = averagered, fill = temperature_norm))+ geom_boxplot(outlier.size = -1) + theme_minimal() + scale_fill_manual(name = "Temperature", labels = c("33C", "34C", "35C"), values = c("mediumseagreen", "darkcyan", "darkgoldenrod")) + ylab("Normalized Average Red Intensity") + xlab("") + theme(axis.text=element_text(size=14)) + ggtitle("Recovery") + theme(plot.title = element_text(hjust = 0.5))
 
 ggarrange(red_stress, red_recov, ncol = 1, nrow = 2, common.legend = TRUE, legend = "right")
 
-#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/02152021- normalized to controls/Avgred_normalized_stressrecov.pdf", height = 9, width = 8)
+ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/02152021- normalized to controls/Avgred_normalized_stressrecov_06012021.pdf", height = 9, width = 8)
 ```
 
 # CoralWatch Color Card
@@ -351,7 +351,7 @@ data_normalized_gather <- pivot_longer(data_normalized, cols = starts_with("t"),
 data_normalized_gather_nas <- data_normalized_gather[!is.na(data_normalized_gather$colorcard),]
   
   
-ggplot(data=data_normalized_gather_nas, aes(x=Site, y = colorcard, fill = temperature_norm))+ geom_boxplot(outlier.size = -1) + theme_minimal() + scale_fill_manual(name = "Temperature", labels = c("33C", "34C", "35C"), values = c("mediumseagreen", "darkcyan", "darkgoldenrod")) + ylab("Color Card Score") + xlab("") + theme(axis.text=element_text(size=14)) 
+t3 = ggplot(data=data_normalized_gather_nas, aes(x=Site, y = colorcard, fill = temperature_norm))+ geom_boxplot(outlier.size = -1) + theme_minimal() + scale_fill_manual(name = "Temperature", labels = c("33C", "34C", "35C"), values = c("mediumseagreen", "darkcyan", "darkgoldenrod")) + ylab("Normalized Color Card \n Score Change") + xlab("") + ggtitle("Recovery") + theme(axis.text=element_text(size=14)) + theme(plot.title = element_text(hjust = 0.5))
 
 #ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/02152021- normalized to controls/colorcard_t3_normalized.pdf", height = 5, width = 8)
 
@@ -364,9 +364,13 @@ data_normalized_gather <- pivot_longer(data_normalized, cols = starts_with("t"),
 
 data_normalized_gather_nas <- data_normalized_gather[!is.na(data_normalized_gather$colorcard),]
 
-ggplot(data=data_normalized_gather_nas, aes(x=Site, y = colorcard, fill = temperature_norm))+ geom_boxplot(outlier.size = -1) + theme_minimal() + scale_fill_manual(name = "Temperature", labels = c("33C", "34C", "35C"), values = c("mediumseagreen", "darkcyan", "darkgoldenrod")) + ylab("Color Card Score") + xlab("") + theme(axis.text=element_text(size=14)) 
+t2 = ggplot(data=data_normalized_gather_nas, aes(x=Site, y = colorcard, fill = temperature_norm))+ geom_boxplot(outlier.size = -1) + theme_minimal() + scale_fill_manual(name = "Temperature", labels = c("33C", "34C", "35C"), values = c("mediumseagreen", "darkcyan", "darkgoldenrod")) + ylab("Normalized Color Card \n Score Change") + xlab("") + ggtitle("Heat Stress") + theme(axis.text=element_text(size=14)) + theme(plot.title = element_text(hjust = 0.5))
 
 #ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/02152021- normalized to controls/colorcard_t2_normalized.pdf", height = 5, width = 8)
+
+ggarrange(t2, t3, ncol = 1, nrow = 2, common.legend = TRUE, legend = "right")
+
+ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/02152021- normalized to controls/colorcard_t2_t3_06012021.pdf", height = 9, width = 8)
 
 ```
 
@@ -471,9 +475,9 @@ data_normalized_gather <- pivot_longer(data_normalized, cols = starts_with("t"),
 data_normalized_gather_nas <- data_normalized_gather[!is.na(data_normalized_gather$pam),]
  
   
-ggplot(data=data_normalized_gather_nas, aes(x=Site, y = pam, fill = temperature_norm))+ geom_boxplot(outlier.size = -1) + theme_minimal() + scale_fill_manual(name = "Temperature", labels = c("33C", "34C", "35C"), values = c("mediumseagreen", "darkcyan", "darkgoldenrod")) + ylab("Photochemical Efficiency (Fv/Fm)") + xlab("") + theme(axis.text=element_text(size=14)) + ylim(-0.13,0.1)
+ggplot(data=data_normalized_gather_nas, aes(x=Site, y = pam, fill = temperature_norm))+ geom_boxplot(outlier.size = -1) + theme_minimal() + scale_fill_manual(name = "Temperature", labels = c("33C", "34C", "35C"), values = c("mediumseagreen", "darkcyan", "darkgoldenrod")) + ylab("Normalized Photochemical Efficiency (Fv/Fm)") + xlab("") + theme(axis.text=element_text(size=14)) + ylim(-0.13,0.1)
 
-#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/02152021- normalized to controls/PAM_normalized.pdf", height = 5, width = 8)
+#ggsave("../../CSUMB/Thesis/Data analysis/Figures - bleaching phys/02152021- normalized to controls/PAM_normalized_060121.pdf", height = 5, width = 8)
 
 ```
 
