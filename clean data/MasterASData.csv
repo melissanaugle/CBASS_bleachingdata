@@ -1,0 +1,681 @@
+Tank,Colony,Time.point,Ramp,Coral.Watch.Color1,Coral.Watch.Color2,Coral.Watch.Color3,PAM..Fv.Fm.,Site,LBSP,pop2016,AverageRed
+A,1,Recovery,28,5,4.5,4,0.624,Faga'tele,Low,0,156.9
+A,1,Recovery,28,5.5,5,4.5,0.668,Coconut Point,High,6707,161.5
+A,1,Recovery,28,5.5,5.5,4.5,0.615,Vatia,Low,640,162.2
+A,1,Recovery,28,6,6,5,0.626,Cannery,High,9276,94.8
+A,1,Recovery,28,6,6,5.5,0.61,Faga'alu,Medium,910,134.8
+A,1,Stress,28,5,5.5,NA,0.61,Vatia,Low,640,111
+A,1,Stress,28,5.5,5.5,NA,0.627,Cannery,High,9276,120
+A,1,Stress,28,6,6,NA,0.65,Faga'alu,Medium,910,135.8
+A,1,Stress,28,6,6,NA,0.605,Faga'tele,Low,0,68.3
+A,1,Stress,28,4.5,5.5,NA,0.667,Coconut Point,High,6707,NA
+A,2,Recovery,28,5.5,5,5.5,0.624,Faga'alu,Medium,910,134.2
+A,2,Recovery,28,5.5,5.5,5,0.638,Vatia,Low,640,152.5
+A,2,Recovery,28,6,6,5.5,0.652,Faga'tele,Low,0,148.6
+A,2,Recovery,28,6,6,5.5,0.671,Cannery,High,9276,126.9
+A,2,Recovery,28,6,NA,NA,NA,Coconut Point,High,6707,NA
+A,2,Stress,28,5,5,NA,0.598,Faga'alu,Medium,910,164.6
+A,2,Stress,28,6,5.5,NA,0.647,Coconut Point,High,6707,NA
+A,2,Stress,28,6,6,NA,0.645,Vatia,Low,640,44.2
+A,2,Stress,28,6,6,NA,0.672,Cannery,High,9276,129.7
+A,2,Stress,28,6,6,NA,0.612,Faga'tele,Low,0,84.8
+A,3,Recovery,28,5.5,5,5,0.647,Coconut Point,High,6707,168.5
+A,3,Recovery,28,6,5.5,5,0.647,Vatia,Low,640,141
+A,3,Recovery,28,6,6,5,0.587,Faga'alu,Medium,910,146.7
+A,3,Recovery,28,6,6,5,0.604,Faga'tele,Low,0,205.7
+A,3,Recovery,28,6,6,6,0.636,Cannery,High,9276,84.5
+A,3,Stress,28,5.5,5,NA,0.628,Faga'tele,Low,0,120.8
+A,3,Stress,28,5.5,5.5,NA,0.653,Cannery,High,9276,118.3
+A,3,Stress,28,6,5,NA,0.677,Coconut Point,High,6707,NA
+A,3,Stress,28,6,5.5,NA,0.61,Vatia,Low,640,92.1
+A,3,Stress,28,6,5.5,NA,0.62,Faga'alu,Medium,910,137.7
+A,4,Recovery,28,5,5,4,0.622,Vatia,Low,640,239.3
+A,4,Recovery,28,5.5,5.5,5,0.606,Faga'alu,Medium,910,151.8
+A,4,Recovery,28,6,5.5,5,0.646,Coconut Point,High,6707,153.6
+A,4,Recovery,28,6,5.5,5,0.603,Faga'tele,Low,0,169.1
+A,4,Recovery,28,6,6,6,0.677,Cannery,High,9276,133.4
+A,4,Stress,28,5,5,NA,0.653,Coconut Point,High,6707,NA
+A,4,Stress,28,5,5,NA,0.658,Faga'alu,Medium,910,153.6
+A,4,Stress,28,6,5,NA,0.636,Faga'tele,Low,0,152.5
+A,4,Stress,28,6,5.5,NA,0.527,Vatia,Low,640,100.2
+A,4,Stress,28,6,6,NA,0.67,Cannery,High,9276,96.5
+A,5,Recovery,28,5,5,4.5,0.629,Coconut Point,High,6707,171.4
+A,5,Recovery,28,5.5,5.5,4.5,0.649,Cannery,High,9276,115.9
+A,5,Recovery,28,5.5,5.5,5.5,0.62,Faga'alu,Medium,910,136.1
+A,5,Recovery,28,6,6,5.5,0.65,Vatia,Low,640,122.8
+A,5,Recovery,28,6,6,5.5,0.587,Faga'tele,Low,0,169
+A,5,Stress,28,5,5,NA,0.636,Coconut Point,High,6707,NA
+A,5,Stress,28,6,5.5,NA,0.61,Faga'alu,Medium,910,157.7
+A,5,Stress,28,6,6,NA,0.644,Vatia,Low,640,83.6
+A,5,Stress,28,6,6,NA,0.653,Cannery,High,9276,97.8
+A,5,Stress,28,6,6,NA,0.593,Faga'tele,Low,0,83.8
+A,6,Recovery,28,5.5,6,4.5,0.65,Faga'tele,Low,0,165.6
+A,6,Recovery,28,6,5.5,5,0.639,Cannery,High,9276,140.3
+A,6,Recovery,28,6,6,5,0.619,Faga'alu,Medium,910,153
+A,6,Recovery,28,6,6,5.5,0.676,Vatia,Low,640,114.5
+A,6,Recovery,28,4.5,4.5,3.5,0.653,Coconut Point,High,6707,209.3
+A,6,Stress,28,5.5,5.5,NA,0.663,Coconut Point,High,6707,NA
+A,6,Stress,28,5.5,5.5,NA,0.665,Faga'alu,Medium,910,137.5
+A,6,Stress,28,6,6,NA,0.665,Cannery,High,9276,134.5
+A,6,Stress,28,6,6,NA,0.665,Faga'tele,Low,0,79.4
+A,6,Stress,28,6,6,NA,0.672,Vatia,Low,640,86
+A,7,Recovery,28,5,4.5,3.5,0.611,Vatia,Low,640,175.5
+A,7,Recovery,28,6,5.5,5,0.665,Coconut Point,High,6707,181.5
+A,7,Recovery,28,6,5.5,5.5,0.633,Faga'alu,Medium,910,152.1
+A,7,Recovery,28,6,6,5.5,0.64,Faga'tele,Low,0,154.2
+A,7,Recovery,28,6,6,6,0.663,Cannery,High,9276,125.5
+A,7,Stress,28,5.5,5.5,NA,0.65,Cannery,High,9276,136.7
+A,7,Stress,28,5.5,6,NA,0.586,Faga'alu,Medium,910,144.5
+A,7,Stress,28,6,5.5,NA,0.641,Faga'tele,Low,0,87.9
+A,7,Stress,28,6,5.5,NA,0.658,Coconut Point,High,6707,NA
+A,7,Stress,28,6,6,NA,0.626,Vatia,Low,640,113.5
+A,8,Recovery,28,5.5,5,5,0.639,Vatia,Low,640,155.9
+A,8,Recovery,28,5.5,5.5,4.5,0.624,Faga'alu,Medium,910,146.8
+A,8,Recovery,28,6,6,4.5,0.659,Faga'tele,Low,0,151
+A,8,Recovery,28,6,6,5,0.633,Coconut Point,High,6707,137.2
+A,8,Recovery,28,6,6,5.5,0.636,Cannery,High,9276,99.8
+A,8,Stress,28,5,5,NA,0.631,Vatia,Low,640,101.5
+A,8,Stress,28,6,5.5,NA,0.606,Coconut Point,High,6707,NA
+A,8,Stress,28,6,6,NA,0.64,Faga'alu,Medium,910,89.4
+A,8,Stress,28,6,6,NA,0.669,Faga'tele,Low,0,99.5
+A,8,Stress,28,6,6,NA,0.685,Cannery,High,9276,110.8
+B,1,Recovery,33,5.5,5,3.5,0.612,Coconut Point,High,6707,188.6
+B,1,Recovery,33,5.5,5.5,2.5,0.609,Vatia,Low,640,183.2
+B,1,Recovery,33,6,6,2.5,0.614,Faga'tele,Low,0,243.5
+B,1,Recovery,33,6,6,4.5,0.645,Cannery,High,9276,125.4
+B,1,Recovery,33,6,6,5.5,0.649,Faga'alu,Medium,910,142.3
+B,1,Stress,33,5,5,NA,0.62,Vatia,Low,640,88.3
+B,1,Stress,33,5.5,5.5,NA,0.648,Coconut Point,High,6707,NA
+B,1,Stress,33,6,5,NA,0.627,Cannery,High,9276,100.4
+B,1,Stress,33,6,5.5,NA,0.52,Faga'alu,Medium,910,153.1
+B,1,Stress,33,6,6,NA,0.622,Faga'tele,Low,0,66.2
+B,2,Recovery,33,5.5,5,3.5,0.633,Faga'alu,Medium,910,177.4
+B,2,Recovery,33,6,5,3.5,0.598,Coconut Point,High,6707,201.5
+B,2,Recovery,33,6,5.5,3.5,0.633,Cannery,High,9276,206.3
+B,2,Recovery,33,6,6,2,0.64,Vatia,Low,640,228.2
+B,2,Recovery,33,6,6,2.5,0.645,Faga'tele,Low,0,211
+B,2,Stress,33,5.5,4.5,NA,0.658,Coconut Point,High,6707,NA
+B,2,Stress,33,5.5,5,NA,0.629,Faga'alu,Medium,910,156.7
+B,2,Stress,33,6,5.5,NA,0.672,Cannery,High,9276,114.5
+B,2,Stress,33,6,6,NA,0.617,Vatia,Low,640,75.3
+B,2,Stress,33,6,6,NA,0.637,Faga'tele,Low,0,95
+B,3,Recovery,33,5,3.5,3.5,0.64,Coconut Point,High,6707,214.8
+B,3,Recovery,33,6,5.5,2,0.631,Faga'alu,Medium,910,227.9
+B,3,Recovery,33,6,6,2,0.654,Vatia,Low,640,237.4
+B,3,Recovery,33,6,6,3,0.618,Faga'tele,Low,0,232.1
+B,3,Recovery,33,6,6,5.5,0.633,Cannery,High,9276,149.8
+B,3,Stress,33,5,5,NA,0.634,Vatia,Low,640,153.2
+B,3,Stress,33,5.5,4.5,NA,0.629,Coconut Point,High,6707,NA
+B,3,Stress,33,5.5,5.5,NA,0.658,Cannery,High,9276,125.9
+B,3,Stress,33,6,6,NA,0.61,Faga'tele,Low,0,84
+B,3,Stress,33,6,6,NA,0.673,Faga'alu,Medium,910,120.7
+B,4,Recovery,33,5.5,5.5,3,0.576,Vatia,Low,640,186.5
+B,4,Recovery,33,5.5,5.5,3.5,0.645,Coconut Point,High,6707,230.6
+B,4,Recovery,33,6,5.5,4.5,0.586,Cannery,High,9276,193.2
+B,4,Recovery,33,6,6,2,0.662,Faga'alu,Medium,910,227.2
+B,4,Recovery,33,6,6,4.5,0.612,Faga'tele,Low,0,214.6
+B,4,Stress,33,5.5,5,NA,0.659,Faga'alu,Medium,910,153.7
+B,4,Stress,33,5.5,5,NA,0.605,Vatia,Low,640,126.6
+B,4,Stress,33,6,4.5,NA,0.667,Coconut Point,High,6707,NA
+B,4,Stress,33,6,6,NA,0.668,Cannery,High,9276,98.7
+B,4,Stress,33,6,6,NA,0.637,Faga'tele,Low,0,94.5
+B,5,Recovery,33,5,5,4,0.625,Cannery,High,9276,189
+B,5,Recovery,33,6,5.5,2.5,0.655,Vatia,Low,640,214.5
+B,5,Recovery,33,6,6,4.5,0.645,Faga'tele,Low,0,151.9
+B,5,Recovery,33,6,6,4.5,0.613,Faga'alu,Medium,910,149.5
+B,5,Recovery,33,4.5,4.5,3.5,0.65,Coconut Point,High,6707,193.9
+B,5,Stress,33,5.5,5.5,NA,0.596,Faga'alu,Medium,910,150
+B,5,Stress,33,6,5.5,NA,0.667,Cannery,High,9276,109.2
+B,5,Stress,33,6,6,NA,0.658,Vatia,Low,640,76.2
+B,5,Stress,33,6,6,NA,0.616,Faga'tele,Low,0,100.3
+B,5,Stress,33,4.5,3.5,NA,0.647,Coconut Point,High,6707,NA
+B,6,Recovery,33,5.5,5.5,2.5,0.605,Faga'alu,Medium,910,185.2
+B,6,Recovery,33,6,5,3.5,0.648,Coconut Point,High,6707,167.1
+B,6,Recovery,33,6,5.5,5,0.61,Vatia,Low,640,164
+B,6,Recovery,33,6,6,4,0.608,Faga'tele,Low,0,176.8
+B,6,Recovery,33,6,6,4.5,0.676,Cannery,High,9276,143.1
+B,6,Stress,33,5,4,NA,0.632,Coconut Point,High,6707,NA
+B,6,Stress,33,6,5,NA,0.667,Cannery,High,9276,145.9
+B,6,Stress,33,6,5.5,NA,0.663,Faga'alu,Medium,910,146
+B,6,Stress,33,6,6,NA,0.629,Faga'tele,Low,0,67.3
+B,6,Stress,33,6,6,NA,0.664,Vatia,Low,640,60.2
+B,7,Recovery,33,5.5,5,2,0.627,Vatia,Low,640,240.2
+B,7,Recovery,33,5.5,5.5,4,0.653,Cannery,High,9276,165
+B,7,Recovery,33,6,5.5,1.5,0.666,Faga'alu,Medium,910,213.8
+B,7,Recovery,33,6,5.5,2.5,0.631,Coconut Point,High,6707,220.2
+B,7,Recovery,33,6,6,4,0.57,Faga'tele,Low,0,182.6
+B,7,Stress,33,5.5,5,NA,0.65,Vatia,Low,640,112.1
+B,7,Stress,33,5.5,5,NA,0.646,Faga'alu,Medium,910,154.2
+B,7,Stress,33,5.5,5.5,NA,0.621,Faga'tele,Low,0,85.7
+B,7,Stress,33,6,5.5,NA,0.633,Coconut Point,High,6707,NA
+B,7,Stress,33,6,6,NA,0.669,Cannery,High,9276,130.1
+B,8,Recovery,33,5,5,2.5,0.644,Vatia,Low,640,200.4
+B,8,Recovery,33,5.5,5.5,5,0.63,Cannery,High,9276,104.2
+B,8,Recovery,33,5.5,3.5,3.5,0.557,Coconut Point,High,6707,186.4
+B,8,Recovery,33,6,5,2,0.651,Faga'alu,Medium,910,216.5
+B,8,Recovery,33,6,6,2.5,0.653,Faga'tele,Low,0,245.3
+B,8,Stress,33,5,3.5,NA,0.588,Coconut Point,High,6707,NA
+B,8,Stress,33,6,5.5,NA,0.651,Faga'alu,Medium,910,127.8
+B,8,Stress,33,6,6,NA,0.652,Cannery,High,9276,73.7
+B,8,Stress,33,6,6,NA,0.575,Vatia,Low,640,78.4
+B,8,Stress,33,6,6,NA,0.634,Faga'tele,Low,0,82.5
+C,1,Recovery,34,5.5,4.5,2,0.677,Cannery,High,9276,208.9
+C,1,Recovery,34,5.5,5,3.5,0.605,Faga'alu,Medium,910,196.5
+C,1,Recovery,34,5.5,5.5,2.5,0.668,Coconut Point,High,6707,173.5
+C,1,Recovery,34,5.5,5.5,4.5,0.612,Vatia,Low,640,189.2
+C,1,Recovery,34,6,6,1.5,0.587,Faga'tele,Low,0,246.2
+C,1,Stress,34,5,4,NA,0.638,Coconut Point,High,6707,NA
+C,1,Stress,34,6,6,NA,0.611,Faga'alu,Medium,910,113.5
+C,1,Stress,34,6,6,NA,0.638,Cannery,High,9276,101.6
+C,1,Stress,34,6,6,NA,0.66,Vatia,Low,640,106.6
+C,1,Stress,34,6,6,NA,0.605,Faga'tele,Low,0,136
+C,2,Recovery,34,5.5,4.5,2,0.656,Coconut Point,High,6707,229.3
+C,2,Recovery,34,6,5.5,3.5,0.611,Cannery,High,9276,212.4
+C,2,Recovery,34,6,6,2.5,0.615,Vatia,Low,640,216.5
+C,2,Recovery,34,6,6,2.5,0.629,Faga'tele,Low,0,241.6
+C,2,Recovery,34,3.5,3,2.5,0.524,Faga'alu,Medium,910,208.7
+C,2,Stress,34,6,5,NA,0.636,Faga'alu,Medium,910,125.1
+C,2,Stress,34,6,5.5,NA,0.658,Cannery,High,9276,121.6
+C,2,Stress,34,6,5.5,NA,0.661,Coconut Point,High,6707,NA
+C,2,Stress,34,6,6,NA,0.641,Vatia,Low,640,61.5
+C,2,Stress,34,6,6,NA,0.594,Faga'tele,Low,0,111.9
+C,3,Recovery,34,5.5,5,3,0.635,Vatia,Low,640,221.5
+C,3,Recovery,34,6,5,3,0.628,Coconut Point,High,6707,182.9
+C,3,Recovery,34,6,5,3.5,0.622,Faga'alu,Medium,910,166.4
+C,3,Recovery,34,6,6,4,0.611,Faga'tele,Low,0,205.9
+C,3,Recovery,34,6,6,4.5,0.671,Cannery,High,9276,145.9
+C,3,Stress,34,5,3.5,NA,0.638,Coconut Point,High,6707,NA
+C,3,Stress,34,5.5,5.5,NA,0.626,Vatia,Low,640,136
+C,3,Stress,34,6,5.5,NA,0.659,Cannery,High,9276,105.8
+C,3,Stress,34,6,5.5,NA,0.603,Faga'alu,Medium,910,122.4
+C,3,Stress,34,6,6,NA,0.58,Faga'tele,Low,0,93.6
+C,4,Recovery,34,5,4,2,0.615,Faga'alu,Medium,910,205
+C,4,Recovery,34,5,5,3,0.568,Faga'tele,Low,0,222.4
+C,4,Recovery,34,6,6,2.5,0.659,Cannery,High,9276,213.9
+C,4,Recovery,34,6,6,2.5,0.671,Coconut Point,High,6707,200.8
+C,4,Recovery,34,6,6,3,0.634,Vatia,Low,640,190
+C,4,Stress,34,5,5,NA,0.593,Coconut Point,High,6707,NA
+C,4,Stress,34,5,5,NA,0.62,Vatia,Low,640,151
+C,4,Stress,34,5.5,5,NA,0.629,Faga'tele,Low,0,156.4
+C,4,Stress,34,5.5,5,NA,0.642,Faga'alu,Medium,910,160.2
+C,4,Stress,34,6,5.5,NA,0.661,Cannery,High,9276,107.5
+C,5,Recovery,34,5,5,2.5,0.638,Coconut Point,High,6707,194
+C,5,Recovery,34,6,5.5,2.5,0.662,Vatia,Low,640,197.8
+C,5,Recovery,34,6,6,2.5,0.663,Cannery,High,9276,164.9
+C,5,Recovery,34,6,6,3.5,0.613,Faga'alu,Medium,910,180.6
+C,5,Recovery,34,6,6,4,0.623,Faga'tele,Low,0,199.2
+C,5,Stress,34,6,5,NA,0.608,Faga'alu,Medium,910,127.6
+C,5,Stress,34,6,5.5,NA,0.671,Cannery,High,9276,98.8
+C,5,Stress,34,6,6,NA,0.611,Vatia,Low,640,72.2
+C,5,Stress,34,6,6,NA,0.609,Faga'tele,Low,0,95.1
+C,5,Stress,34,4.5,4,NA,0.631,Coconut Point,High,6707,NA
+C,6,Recovery,34,5.5,4.5,2,0.641,Cannery,High,9276,220
+C,6,Recovery,34,5.5,5.5,2,0.659,Coconut Point,High,6707,194.3
+C,6,Recovery,34,6,5.5,3,0.624,Faga'alu,Medium,910,190.7
+C,6,Recovery,34,6,5.5,3,0.646,Faga'tele,Low,0,233.9
+C,6,Recovery,34,6,5.5,4.5,0.657,Vatia,Low,640,168.4
+C,6,Stress,34,6,5,NA,0.626,Cannery,High,9276,157.2
+C,6,Stress,34,6,5.5,NA,0.61,Vatia,Low,640,103.9
+C,6,Stress,34,6,5.5,NA,0.648,Faga'alu,Medium,910,139.9
+C,6,Stress,34,6,6,NA,0.621,Faga'tele,Low,0,74.9
+C,6,Stress,34,4.5,5,NA,0.624,Coconut Point,High,6707,NA
+C,7,Recovery,34,6,5.5,2.5,0.594,Vatia,Low,640,222.6
+C,7,Recovery,34,6,5.5,3,0.631,Coconut Point,High,6707,230
+C,7,Recovery,34,6,6,3.5,0.669,Faga'alu,Medium,910,207.7
+C,7,Recovery,34,6,6,4,0.627,Faga'tele,Low,0,214.3
+C,7,Recovery,34,6,6,5.5,0.636,Cannery,High,9276,129.2
+C,7,Stress,34,5,4.5,NA,0.6,Vatia,Low,640,141.1
+C,7,Stress,34,5,5,NA,0.619,Faga'alu,Medium,910,169.6
+C,7,Stress,34,5.5,5.5,NA,0.632,Faga'tele,Low,0,100.5
+C,7,Stress,34,6,5,NA,0.647,Coconut Point,High,6707,NA
+C,7,Stress,34,6,5.5,NA,0.644,Cannery,High,9276,144.6
+C,8,Recovery,34,5.5,5,3.5,0.61,Coconut Point,High,6707,176.3
+C,8,Recovery,34,6,5.5,2.5,0.59,Cannery,High,9276,206.4
+C,8,Recovery,34,6,5.5,4,0.669,Vatia,Low,640,168.4
+C,8,Recovery,34,6,6,3,0.621,Faga'alu,Medium,910,190.9
+C,8,Recovery,34,6,6,4.5,0.625,Faga'tele,Low,0,201.5
+C,8,Stress,34,5.5,5,NA,0.623,Vatia,Low,640,83.2
+C,8,Stress,34,6,5.5,NA,0.658,Coconut Point,High,6707,NA
+C,8,Stress,34,6,5.5,NA,0.57,Faga'alu,Medium,910,143.5
+C,8,Stress,34,6,6,NA,0.628,Cannery,High,9276,84.7
+C,8,Stress,34,6,6,NA,0.597,Faga'tele,Low,0,112.1
+D,1,Recovery,35,5,5.5,2,0.645,Vatia,Low,640,222.5
+D,1,Recovery,35,5.5,4.5,1,0.547,Faga'tele,Low,0,247.1
+D,1,Recovery,35,5.5,5,2,0.63,Faga'alu,Medium,910,219.2
+D,1,Recovery,35,5.5,5.5,2.5,0.655,Coconut Point,High,6707,205.9
+D,1,Recovery,35,6,6,2.5,0.64,Cannery,High,9276,171.9
+D,1,Stress,35,5.5,5,NA,0.644,Faga'alu,Medium,910,153
+D,1,Stress,35,5.5,5,NA,0.662,Cannery,High,9276,159.9
+D,1,Stress,35,5.5,5.5,NA,0.653,Coconut Point,High,6707,NA
+D,1,Stress,35,6,5.5,NA,0.609,Faga'tele,Low,0,84.4
+D,1,Stress,35,6,6,NA,0.643,Vatia,Low,640,81.4
+D,2,Recovery,35,5.5,4,2.5,0.586,Faga'alu,Medium,910,193.9
+D,2,Recovery,35,6,5,2,0.652,Coconut Point,High,6707,246.2
+D,2,Recovery,35,6,5.5,1.5,0.625,Faga'tele,Low,0,238.4
+D,2,Recovery,35,6,5.5,1.5,0.649,Vatia,Low,640,209.3
+D,2,Recovery,35,6,5.5,4.5,0.666,Cannery,High,9276,208.2
+D,2,Stress,35,5.5,4.5,NA,0.647,Faga'alu,Medium,910,155.2
+D,2,Stress,35,5.5,4.5,NA,0.591,Faga'tele,Low,0,134.7
+D,2,Stress,35,6,5.5,NA,0.628,Cannery,High,9276,143.3
+D,2,Stress,35,6,5.5,NA,0.655,Coconut Point,High,6707,NA
+D,2,Stress,35,6,6,NA,0.63,Vatia,Low,640,97.6
+D,3,Recovery,35,5,4,2,0.619,Coconut Point,High,6707,237.4
+D,3,Recovery,35,5.5,5,2.5,0.632,Vatia,Low,640,183
+D,3,Recovery,35,5.5,5.5,2,0.575,Faga'tele,Low,0,241.1
+D,3,Recovery,35,6,5.5,2,0.656,Cannery,High,9276,212.4
+D,3,Recovery,35,6,6,2,0.621,Faga'alu,Medium,910,186.6
+D,3,Stress,35,5.5,3.5,NA,0.632,Coconut Point,High,6707,NA
+D,3,Stress,35,6,5.5,NA,0.67,Cannery,High,9276,113.9
+D,3,Stress,35,6,5.5,NA,0.62,Faga'alu,Medium,910,116.9
+D,3,Stress,35,6,6,NA,0.657,Vatia,Low,640,119.5
+D,3,Stress,35,6,6,NA,0.598,Faga'tele,Low,0,107.6
+D,4,Recovery,35,5.5,5,2,0.598,Vatia,Low,640,213.1
+D,4,Recovery,35,6,4,2,0.625,Faga'alu,Medium,910,207.9
+D,4,Recovery,35,6,5.5,2,0.667,Coconut Point,High,6707,223.4
+D,4,Recovery,35,6,6,2,0.614,Faga'tele,Low,0,223.5
+D,4,Recovery,35,6,6,4.5,0.653,Cannery,High,9276,150.1
+D,4,Stress,35,5.5,5,NA,0.627,Coconut Point,High,6707,NA
+D,4,Stress,35,5.5,5.5,NA,0.627,Vatia,Low,640,139.1
+D,4,Stress,35,6,5,NA,0.65,Faga'alu,Medium,910,136
+D,4,Stress,35,6,6,NA,0.655,Cannery,High,9276,132
+D,4,Stress,35,6,6,NA,0.554,Faga'tele,Low,0,125.2
+D,5,Recovery,35,5,4.5,2,0.638,Coconut Point,High,6707,216.8
+D,5,Recovery,35,5.5,5.5,2,0.649,Vatia,Low,640,216.1
+D,5,Recovery,35,6,5.5,4,0.665,Cannery,High,9276,111
+D,5,Recovery,35,6,6,2,0.601,Faga'alu,Medium,910,203.4
+D,5,Recovery,35,6,6,4,0.616,Faga'tele,Low,0,170
+D,5,Stress,35,5,4,NA,0.605,Coconut Point,High,6707,NA
+D,5,Stress,35,6,5.5,NA,0.655,Vatia,Low,640,104.7
+D,5,Stress,35,6,6,NA,0.64,Faga'alu,Medium,910,133.8
+D,5,Stress,35,6,6,NA,0.654,Cannery,High,9276,106.5
+D,5,Stress,35,6,6,NA,0.657,Faga'tele,Low,0,79.2
+D,6,Recovery,35,5,5,1.5,0.649,Coconut Point,High,6707,239.3
+D,6,Recovery,35,6,5.5,2,0.654,Cannery,High,9276,192.3
+D,6,Recovery,35,6,5.5,2.5,0.637,Faga'alu,Medium,910,189.6
+D,6,Recovery,35,6,6,2.5,0.651,Faga'tele,Low,0,227.3
+D,6,Recovery,35,6,6,5,0.647,Vatia,Low,640,135.7
+D,6,Stress,35,5,4,NA,0.654,Coconut Point,High,6707,NA
+D,6,Stress,35,5.5,5,NA,0.597,Faga'alu,Medium,910,173.9
+D,6,Stress,35,6,5.5,NA,0.658,Cannery,High,9276,98.3
+D,6,Stress,35,6,6,NA,0.614,Faga'tele,Low,0,92.2
+D,6,Stress,35,6,6,NA,0.632,Vatia,Low,640,81.9
+D,7,Recovery,35,5,5,2,0.647,Vatia,Low,640,231
+D,7,Recovery,35,6,5.5,3,0.625,Coconut Point,High,6707,208
+D,7,Recovery,35,6,5.5,4,0.663,Cannery,High,9276,164.9
+D,7,Recovery,35,6,5.5,1,0,Faga'alu,Medium,910,221.4
+D,7,Recovery,35,6,6,2,0.611,Faga'tele,Low,0,250.5
+D,7,Stress,35,5.5,5,NA,0.632,Coconut Point,High,6707,NA
+D,7,Stress,35,5.5,5,NA,0.6,Vatia,Low,640,133.8
+D,7,Stress,35,6,5,NA,0.582,Faga'alu,Medium,910,147.1
+D,7,Stress,35,6,5.5,NA,0.617,Faga'tele,Low,0,105.2
+D,7,Stress,35,6,6,NA,0.657,Cannery,High,9276,119.6
+D,8,Recovery,35,5,5,3.5,0.64,Coconut Point,High,6707,217.2
+D,8,Recovery,35,6,5.5,2,0.647,Faga'alu,Medium,910,201.3
+D,8,Recovery,35,6,6,3,0.617,Faga'tele,Low,0,220.5
+D,8,Recovery,35,6,6,4.5,0.638,Vatia,Low,640,179.9
+D,8,Recovery,35,6,6,5,0.65,Cannery,High,9276,139.8
+D,8,Stress,35,5.5,5,NA,0.565,Cannery,High,9276,128.5
+D,8,Stress,35,5.5,5,NA,0.647,Coconut Point,High,6707,NA
+D,8,Stress,35,5.5,5.5,NA,0.665,Vatia,Low,640,103.9
+D,8,Stress,35,6,5.5,NA,0.61,Faga'alu,Medium,910,115.7
+D,8,Stress,35,6,6,NA,0.619,Faga'tele,Low,0,116.4
+E,1,Recovery,28,5.5,5,5,0.62,Coconut Point,High,6707,140.2
+E,1,Recovery,28,5.5,5.5,5,0.656,Faga'tele,Low,0,162.1
+E,1,Recovery,28,5.5,5.5,5,0.623,Faga'alu,Medium,910,158.1
+E,1,Recovery,28,6,6,5,0.615,Cannery,High,9276,153.5
+E,1,Recovery,28,6,6,5,0.616,Vatia,Low,640,164.4
+E,1,Stress,28,5.5,5,NA,NA,Coconut Point,High,6707,NA
+E,1,Stress,28,5.5,6,NA,NA,Vatia,Low,640,89.3
+E,1,Stress,28,6,5.5,NA,NA,Cannery,High,9276,118.3
+E,1,Stress,28,6,6,NA,NA,Faga'alu,Medium,910,123.5
+E,1,Stress,28,6,6,NA,NA,Faga'tele,Low,0,114.1
+E,2,Recovery,28,5,4.5,4.5,0.599,Faga'alu,Medium,910,164.9
+E,2,Recovery,28,5.5,5,5,0.627,Coconut Point,High,6707,169.6
+E,2,Recovery,28,5.5,6,5,0.662,Vatia,Low,640,189.2
+E,2,Recovery,28,6,6,5,0.624,Cannery,High,9276,141.3
+E,2,Recovery,28,6,6,6,0.651,Faga'tele,Low,0,150.8
+E,2,Stress,28,5,4,NA,NA,Faga'alu,Medium,910,181.6
+E,2,Stress,28,5.5,5.5,NA,NA,Vatia,Low,640,122.5
+E,2,Stress,28,6,5.5,NA,NA,Faga'tele,Low,0,90
+E,2,Stress,28,6,6,NA,NA,Cannery,High,9276,107.4
+E,2,Stress,28,6,6,NA,NA,Coconut Point,High,6707,NA
+E,3,Recovery,28,6,6,4.5,0.66,Coconut Point,High,6707,211.2
+E,3,Recovery,28,6,6,5,0.624,Vatia,Low,640,171.4
+E,3,Recovery,28,6,6,5.5,0.62,Faga'tele,Low,0,184.9
+E,3,Recovery,28,6,6,5.5,0.679,Faga'alu,Medium,910,154.9
+E,3,Recovery,28,6,6,6,0.681,Cannery,High,9276,81.3
+E,3,Stress,28,6,4.5,NA,NA,Coconut Point,High,6707,NA
+E,3,Stress,28,6,5.5,NA,NA,Faga'alu,Medium,910,116.9
+E,3,Stress,28,6,6,NA,NA,Cannery,High,9276,108.5
+E,3,Stress,28,6,6,NA,NA,Faga'tele,Low,0,49.9
+E,3,Stress,28,6,6,NA,NA,Vatia,Low,640,117.7
+E,4,Recovery,28,6,5.5,5,0.617,Faga'tele,Low,0,178.4
+E,4,Recovery,28,6,5.5,5.5,0.663,Coconut Point,High,6707,172.6
+E,4,Recovery,28,6,6,4,0.661,Faga'alu,Medium,910,185.3
+E,4,Recovery,28,6,6,4.5,0.609,Vatia,Low,640,167.8
+E,4,Recovery,28,6,6,6,0.666,Cannery,High,9276,135.6
+E,4,Stress,28,5.5,5.5,NA,NA,Coconut Point,High,6707,NA
+E,4,Stress,28,5.5,6,NA,NA,Vatia,Low,640,93
+E,4,Stress,28,6,5.5,NA,NA,Faga'alu,Medium,910,156.5
+E,4,Stress,28,6,6,NA,NA,Cannery,High,9276,98.8
+E,4,Stress,28,6,6,NA,NA,Faga'tele,Low,0,119.2
+E,5,Recovery,28,6,5.5,5,0.636,Faga'alu,Medium,910,148
+E,5,Recovery,28,6,6,4,0.662,Faga'tele,Low,0,198
+E,5,Recovery,28,6,6,5,0.688,Cannery,High,9276,124.6
+E,5,Recovery,28,6,6,5.5,0.627,Vatia,Low,640,161.9
+E,5,Recovery,28,4.5,5,5,0.647,Coconut Point,High,6707,170
+E,5,Stress,28,5.5,5.5,NA,NA,Cannery,High,9276,132.9
+E,5,Stress,28,5.5,5.5,NA,NA,Coconut Point,High,6707,NA
+E,5,Stress,28,6,6,NA,NA,Faga'alu,Medium,910,134.7
+E,5,Stress,28,6,6,NA,NA,Faga'tele,Low,0,73
+E,5,Stress,28,6,6,NA,NA,Vatia,Low,640,77.5
+E,6,Recovery,28,5.5,5.5,4.5,0.668,Cannery,High,9276,173.4
+E,6,Recovery,28,5.5,5.5,5,0.619,Faga'tele,Low,0,165.2
+E,6,Recovery,28,6,5.5,5,0.653,Faga'alu,Medium,910,159
+E,6,Recovery,28,6,6,5.5,0.642,Vatia,Low,640,153.4
+E,6,Recovery,28,6,6,6,0.678,Coconut Point,High,6707,85.6
+E,6,Stress,28,5,5,NA,NA,Coconut Point,High,6707,NA
+E,6,Stress,28,5.5,5.5,NA,NA,Cannery,High,9276,138.7
+E,6,Stress,28,5.5,6,NA,NA,Faga'tele,Low,0,105.6
+E,6,Stress,28,6,6,NA,NA,Faga'alu,Medium,910,132.4
+E,6,Stress,28,6,6,NA,NA,Vatia,Low,640,68.4
+E,7,Recovery,28,5,5,4,0.688,Vatia,Low,640,178.1
+E,7,Recovery,28,6,5.5,4.5,0.667,Coconut Point,High,6707,222
+E,7,Recovery,28,6,6,5,0.67,Faga'alu,Medium,910,171.6
+E,7,Recovery,28,6,6,5.5,0.656,Cannery,High,9276,131.1
+E,7,Recovery,28,6,6,6,0.638,Faga'tele,Low,0,123.7
+E,7,Stress,28,5.5,5.5,NA,NA,Cannery,High,9276,130.1
+E,7,Stress,28,6,5.5,NA,NA,Faga'alu,Medium,910,169.7
+E,7,Stress,28,6,5.5,NA,NA,Vatia,Low,640,111.2
+E,7,Stress,28,6,6,NA,NA,Coconut Point,High,6707,NA
+E,7,Stress,28,6,6,NA,NA,Faga'tele,Low,0,64.8
+E,8,Recovery,28,6,5.5,5.5,0.67,Coconut Point,High,6707,157.2
+E,8,Recovery,28,6,6,4.5,0.636,Faga'alu,Medium,910,175.8
+E,8,Recovery,28,6,6,5,0.643,Faga'tele,Low,0,207.6
+E,8,Recovery,28,6,6,5,0.666,Vatia,Low,640,167.7
+E,8,Recovery,28,6,6,5.5,0.66,Cannery,High,9276,97.1
+E,8,Stress,28,5.5,5.5,NA,NA,Coconut Point,High,6707,NA
+E,8,Stress,28,6,6,NA,NA,Cannery,High,9276,83.4
+E,8,Stress,28,6,6,NA,NA,Faga'alu,Medium,910,140.7
+E,8,Stress,28,6,6,NA,NA,Faga'tele,Low,0,67
+E,8,Stress,28,6,6,NA,NA,Vatia,Low,640,93.9
+F,1,Recovery,33,5.5,4.5,4,0.659,Coconut Point,High,6707,184.2
+F,1,Recovery,33,5.5,5.5,4,0.66,Cannery,High,9276,123.7
+F,1,Recovery,33,6,6,3.5,0.604,Faga'tele,Low,0,213.5
+F,1,Recovery,33,6,6,4.5,0.642,Vatia,Low,640,186.1
+F,1,Recovery,33,6,6,5,0.658,Faga'alu,Medium,910,135
+F,1,Stress,33,5.5,5,NA,NA,Cannery,High,9276,139.3
+F,1,Stress,33,5.5,3.5,NA,NA,Coconut Point,High,6707,NA
+F,1,Stress,33,6,5.5,NA,NA,Faga'alu,Medium,910,135.9
+F,1,Stress,33,6,6,NA,NA,Faga'tele,Low,0,99.5
+F,1,Stress,33,6,6,NA,NA,Vatia,Low,640,101.6
+F,2,Recovery,33,5.5,4,3.5,0.605,Faga'alu,Medium,910,162.3
+F,2,Recovery,33,5.5,5,3,0.662,Coconut Point,High,6707,174.5
+F,2,Recovery,33,6,6,4,0.627,Faga'tele,Low,0,201.7
+F,2,Recovery,33,6,6,4,0.621,Vatia,Low,640,185.7
+F,2,Recovery,33,6,6,4.5,0.599,Cannery,High,9276,174.1
+F,2,Stress,33,5.5,4.5,NA,NA,Coconut Point,High,6707,NA
+F,2,Stress,33,6,5,NA,NA,Faga'alu,Medium,910,160
+F,2,Stress,33,6,5.5,NA,NA,Faga'tele,Low,0,116.8
+F,2,Stress,33,6,6,NA,NA,Cannery,High,9276,139.2
+F,2,Stress,33,6,6,NA,NA,Vatia,Low,640,72.9
+F,3,Recovery,33,5,5,4,0.625,Vatia,Low,640,167
+F,3,Recovery,33,6,4,3,0.667,Coconut Point,High,6707,194.3
+F,3,Recovery,33,6,5,1,0.63,Faga'alu,Medium,910,231.5
+F,3,Recovery,33,6,5.5,4,0.657,Faga'tele,Low,0,219.8
+F,3,Recovery,33,6,5.5,5,0.654,Cannery,High,9276,56.9
+F,3,Stress,33,5.5,6,NA,NA,Vatia,Low,640,114.8
+F,3,Stress,33,6,5.5,NA,NA,Cannery,High,9276,131
+F,3,Stress,33,6,5.5,NA,NA,Faga'alu,Medium,910,141.6
+F,3,Stress,33,6,6,NA,NA,Faga'tele,Low,0,81.5
+F,3,Stress,33,6,3.5,NA,NA,Coconut Point,High,6707,NA
+F,4,Recovery,33,5,4.5,1.5,0.638,Faga'alu,Medium,910,218.3
+F,4,Recovery,33,5.5,5.5,2.5,0.641,Vatia,Low,640,203.5
+F,4,Recovery,33,6,5.5,3.5,0.646,Coconut Point,High,6707,166.6
+F,4,Recovery,33,6,5.5,4.5,0.647,Cannery,High,9276,141.2
+F,4,Recovery,33,6,6,4.5,0.631,Faga'tele,Low,0,214.4
+F,4,Stress,33,6,5.5,NA,NA,Faga'alu,Medium,910,157.7
+F,4,Stress,33,6,5.5,NA,NA,Vatia,Low,640,130.9
+F,4,Stress,33,6,6,NA,NA,Cannery,High,9276,76.2
+F,4,Stress,33,6,6,NA,NA,Coconut Point,High,6707,NA
+F,4,Stress,33,6,6,NA,NA,Faga'tele,Low,0,127.4
+F,5,Recovery,33,5.5,6,4,0.639,Vatia,Low,640,193.2
+F,5,Recovery,33,6,5.5,3.5,0.682,Coconut Point,High,6707,167.8
+F,5,Recovery,33,6,5.5,4.5,0.638,Faga'alu,Medium,910,138.6
+F,5,Recovery,33,6,6,4,0.686,Cannery,High,9276,123.3
+F,5,Recovery,33,6,6,5,0.558,Faga'tele,Low,0,149.8
+F,5,Stress,33,5.5,5.5,NA,NA,Coconut Point,High,6707,NA
+F,5,Stress,33,6,5.5,NA,NA,Cannery,High,9276,118.8
+F,5,Stress,33,6,6,NA,NA,Faga'alu,Medium,910,118
+F,5,Stress,33,6,6,NA,NA,Faga'tele,Low,0,81.9
+F,5,Stress,33,6,6,NA,NA,Vatia,Low,640,120.9
+F,6,Recovery,33,5,3.5,3.5,0.674,Coconut Point,High,6707,179.3
+F,6,Recovery,33,6,5,4,0.665,Cannery,High,9276,181.9
+F,6,Recovery,33,6,5.5,3.5,0.651,Faga'tele,Low,0,200.3
+F,6,Recovery,33,6,5.5,5,0.629,Faga'alu,Medium,910,164.8
+F,6,Recovery,33,6,6,5.5,0.638,Vatia,Low,640,147
+F,6,Stress,33,5,3,NA,NA,Coconut Point,High,6707,NA
+F,6,Stress,33,6,5.5,NA,NA,Cannery,High,9276,149.1
+F,6,Stress,33,6,5.5,NA,NA,Faga'alu,Medium,910,138.8
+F,6,Stress,33,6,5.5,NA,NA,Faga'tele,Low,0,102.6
+F,6,Stress,33,6,6,NA,NA,Vatia,Low,640,96.1
+F,7,Recovery,33,5.5,5.5,4.5,0.627,Faga'tele,Low,0,177.2
+F,7,Recovery,33,6,5.5,3,0.674,Faga'alu,Medium,910,179
+F,7,Recovery,33,6,6,2.5,0.644,Coconut Point,High,6707,237
+F,7,Recovery,33,6,6,5.5,0.627,Cannery,High,9276,68.4
+F,7,Recovery,33,6,6,5.5,0.617,Vatia,Low,640,136.1
+F,7,Stress,33,5,5,NA,NA,Vatia,Low,640,105.8
+F,7,Stress,33,5.5,5,NA,NA,Faga'alu,Medium,910,161.9
+F,7,Stress,33,6,5.5,NA,NA,Coconut Point,High,6707,NA
+F,7,Stress,33,6,6,NA,NA,Cannery,High,9276,121
+F,7,Stress,33,6,6,NA,NA,Faga'tele,Low,0,76.6
+F,8,Recovery,33,6,5,5.5,0.65,Cannery,High,9276,159.3
+F,8,Recovery,33,6,5.5,4.5,0.615,Coconut Point,High,6707,167.7
+F,8,Recovery,33,6,6,3,0.633,Faga'alu,Medium,910,190.9
+F,8,Recovery,33,6,6,4.5,0.654,Faga'tele,Low,0,228.7
+F,8,Recovery,33,6,6,5.5,0.66,Vatia,Low,640,135.6
+F,8,Stress,33,5.5,5,NA,NA,Cannery,High,9276,138.3
+F,8,Stress,33,5.5,5.5,NA,NA,Vatia,Low,640,112.9
+F,8,Stress,33,6,5,NA,NA,Coconut Point,High,6707,NA
+F,8,Stress,33,6,5.5,NA,NA,Faga'alu,Medium,910,119.4
+F,8,Stress,33,6,6,NA,NA,Faga'tele,Low,0,84.5
+FieldCont,1,NA,Field,5,NA,NA,0.636,Vatia,Low,640,123.7
+FieldCont,1,NA,Field,5,NA,NA,0.643,Coconut Point,High,6707,121.3
+FieldCont,1,NA,Field,5,NA,NA,0.643,Faga'alu,Medium,910,NA
+FieldCont,1,NA,Field,5,NA,NA,0.697,Cannery,High,9276,70.6
+FieldCont,1,NA,Field,6,NA,NA,0.601,Faga'tele,Low,0,82.9
+FieldCont,2,NA,Field,5.5,NA,NA,0.691,Cannery,High,9276,91.3
+FieldCont,2,NA,Field,6,NA,NA,0.66,Coconut Point,High,6707,120
+FieldCont,2,NA,Field,6,NA,NA,0.664,Vatia,Low,640,89.1
+FieldCont,2,NA,Field,6,NA,NA,0.621,Faga'tele,Low,0,48.9
+FieldCont,2,NA,Field,4,NA,NA,0.621,Faga'alu,Medium,910,NA
+FieldCont,3,NA,Field,5,NA,NA,0.66,Cannery,High,9276,131.7
+FieldCont,3,NA,Field,5,NA,NA,0.661,Coconut Point,High,6707,154.5
+FieldCont,3,NA,Field,5.5,NA,NA,0.656,Faga'tele,Low,0,113.1
+FieldCont,3,NA,Field,5.5,NA,NA,0.62,Vatia,Low,640,145.8
+FieldCont,3,NA,Field,6,NA,NA,0.651,Faga'alu,Medium,910,NA
+FieldCont,4,NA,Field,5,NA,NA,0.645,Vatia,Low,640,107.2
+FieldCont,4,NA,Field,5.5,NA,NA,0.698,Faga'alu,Medium,910,NA
+FieldCont,4,NA,Field,6,NA,NA,0.641,Coconut Point,High,6707,153.8
+FieldCont,4,NA,Field,6,NA,NA,0.684,Cannery,High,9276,49.1
+FieldCont,4,NA,Field,6,NA,NA,0.642,Faga'tele,Low,0,89.5
+FieldCont,5,NA,Field,5,NA,NA,0.611,Vatia,Low,640,98.7
+FieldCont,5,NA,Field,6,NA,NA,0.628,Cannery,High,9276,82.4
+FieldCont,5,NA,Field,6,NA,NA,0.667,Faga'tele,Low,0,68.9
+FieldCont,5,NA,Field,6,NA,NA,0.669,Faga'alu,Medium,910,NA
+FieldCont,5,NA,Field,4,NA,NA,0.632,Coconut Point,High,6707,176.6
+FieldCont,6,NA,Field,5,NA,NA,0.631,Faga'alu,Medium,910,NA
+FieldCont,6,NA,Field,5,NA,NA,0.64,Coconut Point,High,6707,147.1
+FieldCont,6,NA,Field,5.5,NA,NA,0.686,Cannery,High,9276,84.8
+FieldCont,6,NA,Field,6,NA,NA,0.639,Faga'tele,Low,0,108.6
+FieldCont,6,NA,Field,6,NA,NA,0.656,Vatia,Low,640,97
+FieldCont,7,NA,Field,5.5,NA,NA,0.628,Vatia,Low,640,130.6
+FieldCont,7,NA,Field,6,NA,NA,0.628,Cannery,High,9276,98.6
+FieldCont,7,NA,Field,6,NA,NA,0.643,Coconut Point,High,6707,138.3
+FieldCont,7,NA,Field,6,NA,NA,0.653,Faga'tele,Low,0,79.7
+FieldCont,7,NA,Field,4.5,NA,NA,0.696,Faga'alu,Medium,910,NA
+FieldCont,8,NA,Field,5,NA,NA,0.613,Coconut Point,High,6707,132.2
+FieldCont,8,NA,Field,5.5,NA,NA,0.664,Faga'tele,Low,0,101.6
+FieldCont,8,NA,Field,5.5,NA,NA,0.665,Vatia,Low,640,95.1
+FieldCont,8,NA,Field,5.5,NA,NA,0.681,Faga'alu,Medium,910,NA
+FieldCont,8,NA,Field,6,NA,NA,0.68,Cannery,High,9276,55.9
+G,1,Recovery,34,5.5,4,2.5,0.662,Coconut Point,High,6707,182.4
+G,1,Recovery,34,5.5,5.5,2,0.657,Cannery,High,9276,200.7
+G,1,Recovery,34,5.5,5.5,2.5,0.593,Faga'alu,Medium,910,188.8
+G,1,Recovery,34,6,5.5,2.5,0.583,Faga'tele,Low,0,228.7
+G,1,Recovery,34,6,6,2.5,0.623,Vatia,Low,640,202.8
+G,1,Stress,34,5.5,4,NA,NA,Coconut Point,High,6707,NA
+G,1,Stress,34,5.5,5,NA,NA,Cannery,High,9276,143.2
+G,1,Stress,34,5.5,5,NA,NA,Faga'tele,Low,0,140
+G,1,Stress,34,5.5,5.5,NA,NA,Vatia,Low,640,90.2
+G,1,Stress,34,6,5,NA,NA,Faga'alu,Medium,910,150.4
+G,2,Recovery,34,5.5,4,1,0,Faga'alu,Medium,910,208
+G,2,Recovery,34,6,5,2,0.655,Coconut Point,High,6707,216
+G,2,Recovery,34,6,6,2,0.626,Vatia,Low,640,215.1
+G,2,Recovery,34,6,6,2.5,0.644,Cannery,High,9276,180
+G,2,Recovery,34,6,6,4.5,0.633,Faga'tele,Low,0,205.5
+G,2,Stress,34,5.5,4,NA,NA,Faga'alu,Medium,910,187.1
+G,2,Stress,34,6,5,NA,NA,Coconut Point,High,6707,NA
+G,2,Stress,34,6,6,NA,NA,Cannery,High,9276,110
+G,2,Stress,34,6,6,NA,NA,Faga'tele,Low,0,99.8
+G,2,Stress,34,6,6,NA,NA,Vatia,Low,640,82.8
+G,3,Recovery,34,5.5,6,1.5,0.631,Vatia,Low,640,237.9
+G,3,Recovery,34,6,4.5,2,0.662,Coconut Point,High,6707,210.5
+G,3,Recovery,34,6,5.5,1,0.636,Faga'alu,Medium,910,220.4
+G,3,Recovery,34,6,6,3,0.628,Cannery,High,9276,198.7
+G,3,Recovery,34,6,6,3.5,0.57,Faga'tele,Low,0,206.7
+G,3,Stress,34,5,4,NA,NA,Coconut Point,High,6707,NA
+G,3,Stress,34,5.5,5,NA,NA,Faga'alu,Medium,910,139.5
+G,3,Stress,34,6,5.5,NA,NA,Cannery,High,9276,129.9
+G,3,Stress,34,6,5.5,NA,NA,Vatia,Low,640,106
+G,3,Stress,34,6,6,NA,NA,Faga'tele,Low,0,105.8
+G,4,Recovery,34,5.5,5,1,0.592,Coconut Point,High,6707,246.1
+G,4,Recovery,34,6,4,1,0,Faga'alu,Medium,910,218.4
+G,4,Recovery,34,6,6,1.5,0.608,Vatia,Low,640,210.5
+G,4,Recovery,34,6,6,2.5,0.625,Cannery,High,9276,192.3
+G,4,Recovery,34,6,6,4.5,0.642,Faga'tele,Low,0,239
+G,4,Stress,34,5.5,4,NA,NA,Coconut Point,High,6707,NA
+G,4,Stress,34,5.5,5,NA,NA,Faga'tele,Low,0,141.8
+G,4,Stress,34,5.5,5,NA,NA,Vatia,Low,640,100.8
+G,4,Stress,34,5.5,3.5,NA,NA,Faga'alu,Medium,910,171
+G,4,Stress,34,6,5.5,NA,NA,Cannery,High,9276,123.1
+G,5,Recovery,34,6,5,1.5,0.656,Faga'alu,Medium,910,190.5
+G,5,Recovery,34,6,5.5,1.5,0.661,Cannery,High,9276,211.8
+G,5,Recovery,34,6,6,2,0.641,Vatia,Low,640,204.4
+G,5,Recovery,34,6,6,3,0.578,Faga'tele,Low,0,216.9
+G,5,Recovery,34,4.5,3.5,1.5,0.647,Coconut Point,High,6707,231.2
+G,5,Stress,34,5.5,5,NA,NA,Cannery,High,9276,129.1
+G,5,Stress,34,6,4.5,NA,NA,Coconut Point,High,6707,NA
+G,5,Stress,34,6,6,NA,NA,Faga'alu,Medium,910,131.2
+G,5,Stress,34,6,6,NA,NA,Faga'tele,Low,0,71.5
+G,5,Stress,34,6,6,NA,NA,Vatia,Low,640,65.2
+G,6,Recovery,34,5.5,4.5,1.5,0.617,Coconut Point,High,6707,235.5
+G,6,Recovery,34,5.5,5.5,1.5,0.639,Faga'alu,Medium,910,202.9
+G,6,Recovery,34,5.5,5.5,2,0.614,Faga'tele,Low,0,230
+G,6,Recovery,34,6,5.5,2,0.657,Cannery,High,9276,193.8
+G,6,Recovery,34,6,5.5,5,0.627,Vatia,Low,640,161.1
+G,6,Stress,34,5,5,NA,NA,Coconut Point,High,6707,NA
+G,6,Stress,34,6,4.5,NA,NA,Cannery,High,9276,135.4
+G,6,Stress,34,6,5.5,NA,NA,Faga'alu,Medium,910,154.2
+G,6,Stress,34,6,6,NA,NA,Faga'tele,Low,0,78.4
+G,6,Stress,34,6,6,NA,NA,Vatia,Low,640,58.5
+G,7,Recovery,34,5.5,5,2,0.611,Faga'tele,Low,0,247.8
+G,7,Recovery,34,5.5,5.5,3,0.608,Vatia,Low,640,210.4
+G,7,Recovery,34,6,5,1.5,0,Faga'alu,Medium,910,235.6
+G,7,Recovery,34,6,5.5,2,0.629,Cannery,High,9276,200.1
+G,7,Recovery,34,6,5.5,2,0.641,Coconut Point,High,6707,231.4
+G,7,Stress,34,5.5,5,NA,NA,Cannery,High,9276,151.3
+G,7,Stress,34,5.5,5.5,NA,NA,Vatia,Low,640,141
+G,7,Stress,34,6,5,NA,NA,Coconut Point,High,6707,NA
+G,7,Stress,34,6,5,NA,NA,Faga'alu,Medium,910,156
+G,7,Stress,34,6,5.5,NA,NA,Faga'tele,Low,0,125.5
+G,8,Recovery,34,5.5,5,4.5,0.597,Coconut Point,High,6707,207.9
+G,8,Recovery,34,6,5,2,0.642,Faga'alu,Medium,910,212.5
+G,8,Recovery,34,6,5.5,2,0.63,Vatia,Low,640,202.6
+G,8,Recovery,34,6,5.5,3,0.596,Faga'tele,Low,0,209.7
+G,8,Recovery,34,6,6,3.5,0.596,Cannery,High,9276,174.8
+G,8,Stress,34,5.5,5.5,NA,NA,Vatia,Low,640,104
+G,8,Stress,34,6,5.5,NA,NA,Coconut Point,High,6707,NA
+G,8,Stress,34,6,6,NA,NA,Cannery,High,9276,85.8
+G,8,Stress,34,6,6,NA,NA,Faga'alu,Medium,910,117.7
+G,8,Stress,34,6,6,NA,NA,Faga'tele,Low,0,85
+H,1,Recovery,35,5,4.5,2.5,0.648,Coconut Point,High,6707,217.5
+H,1,Recovery,35,5.5,4.5,1,0.619,Faga'tele,Low,0,245
+H,1,Recovery,35,6,5,2,0.675,Faga'alu,Medium,910,205.9
+H,1,Recovery,35,6,6,3,0.664,Cannery,High,9276,191.8
+H,1,Recovery,35,6,6,3.5,0.615,Vatia,Low,640,170.7
+H,1,Stress,35,5.5,4,NA,NA,Coconut Point,High,6707,NA
+H,1,Stress,35,6,5.5,NA,NA,Cannery,High,9276,100.2
+H,1,Stress,35,6,5.5,NA,NA,Faga'alu,Medium,910,150.8
+H,1,Stress,35,6,5.5,NA,NA,Vatia,Low,640,85.1
+H,1,Stress,35,6,6,NA,NA,Faga'tele,Low,0,113.6
+H,2,Recovery,35,5,4,2,0.66,Faga'alu,Medium,910,195.5
+H,2,Recovery,35,6,5,2,0.617,Coconut Point,High,6707,222
+H,2,Recovery,35,6,6,2,0.577,Faga'tele,Low,0,250.8
+H,2,Recovery,35,6,6,3.5,0.661,Vatia,Low,640,194.6
+H,2,Recovery,35,6,6,4.5,0.664,Cannery,High,9276,129.8
+H,2,Stress,35,6,4,NA,NA,Faga'alu,Medium,910,176.3
+H,2,Stress,35,6,5.5,NA,NA,Cannery,High,9276,114.1
+H,2,Stress,35,6,5.5,NA,NA,Coconut Point,High,6707,NA
+H,2,Stress,35,6,5.5,NA,NA,Vatia,Low,640,91
+H,2,Stress,35,6,6,NA,NA,Faga'tele,Low,0,97.7
+H,3,Recovery,35,5.5,4,1,0.647,Coconut Point,High,6707,224
+H,3,Recovery,35,5.5,5,3.5,0.641,Vatia,Low,640,173.6
+H,3,Recovery,35,5.5,5.5,1,0.611,Faga'tele,Low,0,251.7
+H,3,Recovery,35,6,5,2,0.556,Faga'alu,Medium,910,199.6
+H,3,Recovery,35,6,6,2.5,0.643,Cannery,High,9276,204
+H,3,Stress,35,5,4,NA,NA,Vatia,Low,640,154.2
+H,3,Stress,35,5.5,4.5,NA,NA,Coconut Point,High,6707,NA
+H,3,Stress,35,6,5.5,NA,NA,Cannery,High,9276,123.6
+H,3,Stress,35,6,5.5,NA,NA,Faga'alu,Medium,910,163.2
+H,3,Stress,35,6,6,NA,NA,Faga'tele,Low,0,98.3
+H,4,Recovery,35,5.5,5,2,0.618,Coconut Point,High,6707,233.1
+H,4,Recovery,35,5.5,5,3,0.561,Vatia,Low,640,171.8
+H,4,Recovery,35,6,4.5,1.5,0.602,Faga'alu,Medium,910,209.8
+H,4,Recovery,35,6,5,2,0.576,Faga'tele,Low,0,244.6
+H,4,Recovery,35,6,6,2,0.614,Cannery,High,9276,217.5
+H,4,Stress,35,5.5,4,NA,NA,Faga'tele,Low,0,182.1
+H,4,Stress,35,5.5,5,NA,NA,Vatia,Low,640,116.7
+H,4,Stress,35,6,5,NA,NA,Faga'alu,Medium,910,157.5
+H,4,Stress,35,6,5.5,NA,NA,Cannery,High,9276,99.5
+H,4,Stress,35,6,5.5,NA,NA,Coconut Point,High,6707,NA
+H,5,Recovery,35,5.5,5,2.5,0.611,Cannery,High,9276,161.9
+H,5,Recovery,35,5.5,5.5,1.5,0.665,Faga'alu,Medium,910,197.4
+H,5,Recovery,35,6,5,4.5,0.633,Vatia,Low,640,179
+H,5,Recovery,35,6,5.5,2,0.616,Coconut Point,High,6707,203.8
+H,5,Recovery,35,6,6,3.5,0.627,Faga'tele,Low,0,218.8
+H,5,Stress,35,5.5,4.5,NA,NA,Coconut Point,High,6707,NA
+H,5,Stress,35,5.5,5,NA,NA,Cannery,High,9276,131.2
+H,5,Stress,35,6,5.5,NA,NA,Faga'alu,Medium,910,142.3
+H,5,Stress,35,6,5.5,NA,NA,Vatia,Low,640,85.8
+H,5,Stress,35,6,6,NA,NA,Faga'tele,Low,0,59.8
+H,6,Recovery,35,5.5,4.5,1,0.638,Coconut Point,High,6707,231
+H,6,Recovery,35,6,5,2,0.672,Faga'alu,Medium,910,199.9
+H,6,Recovery,35,6,5,3,0.631,Cannery,High,9276,193
+H,6,Recovery,35,6,5.5,1.5,0.605,Faga'tele,Low,0,239.2
+H,6,Recovery,35,6,6,5.5,0.588,Vatia,Low,640,128.6
+H,6,Stress,35,5.5,4,NA,NA,Cannery,High,9276,161.5
+H,6,Stress,35,6,5,NA,NA,Coconut Point,High,6707,NA
+H,6,Stress,35,6,6,NA,NA,Faga'alu,Medium,910,144.5
+H,6,Stress,35,6,6,NA,NA,Faga'tele,Low,0,86.4
+H,6,Stress,35,6,6,NA,NA,Vatia,Low,640,70
+H,7,Recovery,35,6,5,2,0.611,Coconut Point,High,6707,238.9
+H,7,Recovery,35,6,5,2,0.661,Cannery,High,9276,223.6
+H,7,Recovery,35,6,5.5,2,0.589,Faga'alu,Medium,910,204.3
+H,7,Recovery,35,6,6,2,0.627,Faga'tele,Low,0,216
+H,7,Recovery,35,6,6,3,0.642,Vatia,Low,640,241.3
+H,7,Stress,35,5,4,NA,NA,Vatia,Low,640,171.6
+H,7,Stress,35,5.5,5,NA,NA,Faga'alu,Medium,910,181
+H,7,Stress,35,5.5,5,NA,NA,Faga'tele,Low,0,129.9
+H,7,Stress,35,6,5.5,NA,NA,Cannery,High,9276,102
+H,7,Stress,35,6,6,NA,NA,Coconut Point,High,6707,NA
+H,8,Recovery,35,5.5,5.5,3,0.619,Vatia,Low,640,200.4
+H,8,Recovery,35,5.5,5.5,4,0.563,Coconut Point,High,6707,167
+H,8,Recovery,35,6,5.5,2.5,0.643,Cannery,High,9276,215.4
+H,8,Recovery,35,6,6,2,0.6,Faga'tele,Low,0,212.5
+H,8,Recovery,35,6,6,4.5,0.639,Faga'alu,Medium,910,144.6
+H,8,Stress,35,5.5,4,NA,NA,Cannery,High,9276,164.7
+H,8,Stress,35,5.5,5,NA,NA,Coconut Point,High,6707,NA
+H,8,Stress,35,5.5,5,NA,NA,Vatia,Low,640,100.3
+H,8,Stress,35,6,4,NA,NA,Faga'alu,Medium,910,179.3
+H,8,Stress,35,6,5.5,NA,NA,Faga'tele,Low,0,88.7
