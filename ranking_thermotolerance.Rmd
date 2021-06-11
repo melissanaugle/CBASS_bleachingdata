@@ -1,0 +1,97 @@
+---
+title: "ranking_thermotolerance"
+author: "Melissa Naugle"
+date: "6/11/2021"
+output: html_document
+---
+```{r}
+#change this to your working directory
+setwd(dir = "~/Desktop/GitHub/CBASS_bleachingdata/")
+rm( list = ls())
+graphics.off()
+library(ggplot2)
+library(plyr)
+library(dplyr)
+library(reshape2)
+library(mosaic)
+library(car)
+library(agricolae)
+library(lmerTest)
+library(ggpubr)
+library(tidyr)
+
+data <- read.csv("clean data/MasterASData.csv")
+head(data)
+data$Time.point <- as.character(data$Time.point)
+#insert "field" into timepoint for field collected corals
+data$Time.point[data$Ramp == "Field"] <- "Field"
+
+```
+
+
+```{r}
+data_cw <- data
+head(data_cw)
+data_cw$AverageRed <- NULL
+data_cw$PAM..Fv.Fm. <- NULL
+data_cw$X <- NULL
+#if tank A-D, rep 1; if tank E-F, rep 2
+data_cw$Rep[data_cw$Tank == "A"] <- "1"
+data_cw$Rep[data_cw$Tank == "B"] <- "1"
+data_cw$Rep[data_cw$Tank == "C"] <- "1"
+data_cw$Rep[data_cw$Tank == "D"] <- "1"
+data_cw$Rep[data_cw$Tank == "E"] <- "2"
+data_cw$Rep[data_cw$Tank == "F"] <- "2"
+data_cw$Rep[data_cw$Tank == "G"] <- "2"
+data_cw$Rep[data_cw$Tank == "H"] <- "2"
+data_cw$Tank <- NULL
+data_cw$Coral.Watch.Color1 <- NULL
+data_cw$Coral.Watch.Color2 <- NULL
+
+data_CW3 <- spread(data_cw, Ramp, Coral.Watch.Color3)
+head(data_CW3)
+
+```
+
+
+# Identify top 10 most/least tolerant colonies
+
+```{r}
+#Fit linear model for each genotype across all temperatures
+data_CW3 <- data_CW3 %>% drop_na(PAMChange) # remove NAs
+slopes<-pam.data %>% group_by(Genobysite) %>% do(tidy(lm(PAMChange ~ Treatment, .)))
+
+strong <- slopes %>%
+  ungroup() %>%
+  filter(term=="Treatment") %>%
+  arrange(estimate) %>%
+  slice_head(n = 10) %>%
+  mutate(tolerance="least_tolerant")
+strong_corals <-right_join(pam.data, strong, by = "Genobysite")
+
+weak <- slopes %>%
+  ungroup() %>%
+  filter(term=="Treatment") %>%
+  arrange(estimate) %>%
+  slice_tail(n = 10) %>%
+  mutate(tolerance="most_tolerant")
+weak_corals <-right_join(pam.data, weak, by = "Genobysite")
+          
+weak.strong <-bind_rows(strong_corals, weak_corals)
+
+```
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
