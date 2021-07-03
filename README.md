@@ -1,5 +1,7 @@
 # CBASS_bleachingdata
 
+Temperature and thermotolerance data collected in Tutuila, American Samoa in August 2019 for Melissa's Master's Thesis. 
+
 In this repo there is:
 
 1. Temp data from field sites (field hobo data)
