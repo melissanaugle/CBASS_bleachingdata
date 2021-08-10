@@ -1,0 +1,338 @@
+---
+title: 'Modeling Thermotolerance by Symbionts + pollution 2014 and 2019'
+author: "Melissa Naugle"
+date: "8/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+setwd(dir = "~/Desktop/GitHub/CBASS_bleachingdata/Modeling/")
+rm( list = ls())
+graphics.off()
+library(reshape2)
+library(DescTools)
+library(epitools)
+library(patchwork)
+library(tidyverse)
+library(mosaic)
+library(lme4)
+library(lmerTest)
+library(mgcv)
+```
+Load data, join together  
+
+```{r}
+LD50_2014 <- read.csv("data/2014_ColonyOutput_Assays_SCLERA.csv")
+LD50_2014 <- LD50_2014[LD50_2014$Species == "Acropora hyacinthus",]
+LD50_2019 <- read.csv("data/2019_UniqueColony_SCLERAModeling_v1.5.csv")
+LD50_2019$Site_Col <- paste0(LD50_2019$Site,"_",LD50_2019$Colony)
+LD50_2019$Site <- NULL
+LD50_2019$LBSP <- NULL
+LD50_2019$pop2016 <- NULL
+symbiont_2014 <- read.csv("data/2014_fromtom_symbiont_log_ratios_allsites_08_05_21_LBSP.csv")
+symbiont_2014$Site <- NULL
+symbiont_2014$Season <- NULL
+symbiont_2019 <- read.csv("data/2019_symbiont_log_ratios_08_05_21_LBSP.csv")
+symbiont_2019$Site_Col <- paste0(symbiont_2019$Site,"_",symbiont_2019$Colony)
+
+GE_controls_2019 <- read.csv("data/eignegenes_controls.csv")
+GE_controls_2019$Site_Col <- paste0(GE_controls_2019$Site,"_",GE_controls_2019$Rep)
+GE_controls_2019$Site <- NULL
+
+data_2014 <- left_join(symbiont_2014, LD50_2014, by = "Colony")
+data_2019 <- left_join(symbiont_2019, LD50_2019, by = "Site_Col")
+data_2019 <- left_join(data_2019, GE_controls_2019, by = "Site_Col")
+```
+
+#Modeling 2014
+
+Tried lmer linear model with all factors to describe variation of 1. MortDegDays 2. MortTemp and 3. TimeToMortality
+-also looked at impact of interactions (some are signif, though maybe not biologically relevant?)
+
+No models matched the values in the CRCP report, some potential reasons: 
+-differences in thermotolerance metric?
+-incorrect calculation of C:D ratio (maybe since I capped at 20 and -20 this is causing an issue? though models look similar when using proportion of C)
+-something else?
+
+Best model looks like GAM with proportion C, season, and lbsp! (end of chunk)
+
+```{r }
+
+#MortDegDays with full model 
+m2014_full_mdd <- lmer(MortDegDays ~ CDratio_log + Season + LBSP + (1|Site), data = data_2014)
+summary(m2014_full_mdd)
+anova(m2014_full_mdd)
+#CD almost signif, LBSP is not
+
+#MortTemp with full model 
+m2014_full_mt <- lmer(MortTemp ~ CDratio_log + Season + LBSP + (1|Site), data = data_2014)
+summary(m2014_full_mt)
+anova(m2014_full_mt)
+#LBSP closish to signif, CD is not
+
+#Timeto mortality with full model 
+m2014_full_tm <- lmer(TimeToMortality ~ CDratio_log + Season + LBSP + (1|Site), data = data_2014)
+summary(m2014_full_tm)
+anova(m2014_full_tm)
+plot(m2014_full_tm)
+#CD is signif, LBSP is not
+#closest to ANOVA table from CRCP report 
+
+#proportions C and D to compare to C:D ratio 
+m2014_full_mdd_propc <- lmer(MortDegDays ~ C_prop + Season + LBSP + (1|Site), data = data_2014)
+anova(m2014_full_mdd_propc)
+m2014_full_tm_propc <- lmer(TimeToMortality ~ C_prop + Season + LBSP + (1|Site), data = data_2014)
+anova(m2014_full_tm_propc)
+#similar to above models using CD ratio. symbionts and season signif, LBSP is not  
+
+AIC(m2014_full_mdd, m2014_full_mt, m2014_full_tm, m2014_full_mdd_propc, m2014_full_tm_propc)
+#MortTemp has best fit 
+
+#GAM 
+
+#just using C:D 
+m2014_gam_cdonly <- gam(MortDegDays ~ CDratio_log , data =  data_2014)
+summary(m2014_gam_cdonly)
+#this is signif by symbionts
+
+m2014_gam_full <- gam(MortDegDays ~ CDratio_log + Season + LBSP, data =  data_2014)
+summary(m2014_gam_full)
+anova(m2014_gam_full)
+#signif most by season, then lbsp, close to signif for symbionts 
+
+#not sure about this smoothing part
+m2014_gam_full_smoothCD <- gam(MortDegDays ~ s(CDratio_log) + Season + LBSP, data =  data_2014)
+summary(m2014_gam_full_smoothCD)
+anova(m2014_gam_full_smoothCD)
+plot(m2014_gam_full_smoothCD, residuals = T)
+
+######################### Look here 
+
+#s() for continuous variables 
+#k = num knots (choose 3 or 5 or something small)
+#use gam to see if non-linear then return to lmer w modifications ? 
+#could consider using site #GAMM for that - more for exploratory 
+#could log transforming C prop - or switch to cd ratio
+
+#try GAM with proportion C
+m2014_gam_full_Cprop <- gam(MortDegDays ~ s(log(C_prop+1e-5), k = 5) + Season + LBSP, data =  data_2014)
+summary(m2014_gam_full_Cprop)
+anova(m2014_gam_full_Cprop)
+plot(m2014_gam_full_Cprop, pages = 1, residuals = T)
+#everything is significant! 
+#linear is better 
+#try in lmer 
+
+#try dropping variables and compare fit 
+m2014_gam_noCprop <- gam(MortDegDays ~  Season + LBSP, data =  data_2014)
+m2014_gam_noseason <- gam(MortDegDays ~  s(C_prop, k = 3)  + LBSP, data =  data_2014)
+m2014_gam_nolbsp <- gam(MortDegDays ~  s(C_prop, k = 3) + Season , data =  data_2014)
+
+
+AIC(m2014_gam_full_Cprop, m2014_gam_noCprop,m2014_gam_noseason, m2014_gam_nolbsp)
+#full model is best!! 
+
+plot(sort(data_2014$C_prop))
+plot(sort(log10(data_2014$C_prop+1e-5)))
+
+#continue here with lmer similar model to gam 
+
+```
+
+```{r }
+#look at % explained by each variable
+m2014 <- gam(MortDegDays ~ C_prop, data =  data_2014)
+summary(m2014)
+#proportion C explained 7.5%
+
+m2014 <- gam(MortDegDays ~ Season, data =  data_2014)
+summary(m2014)
+#season explains 43.8%
+
+m2014 <- gam(MortDegDays ~ LBSP, data =  data_2014)
+summary(m2014)
+#LBSP explains 15.4%
+
+
+m2014 <- gam(MortDegDays ~ Site, data =  data_2014)
+summary(m2014)
+anova(m2014)
+#site explains 55%
+
+#we should probably include site in here somehow?
+#better to compare significance 
+
+#################### do this 
+#leave one out deviance explained 
+#deviance explained with full model and then model - 1 variable  
+
+```
+
+
+#Modeling 2019
+
+As expected, CD ratio nor pollution is significant 
+
+Same for non-linear- nothing looks to really explain variation 
+
+#### do this 
+should maybe go back and try GE data along with c prop and lbsp and ...
+include site as random 
+
+
+```{r }
+m2019 <- lmer(Phenotype.X0.mn ~ CDratio_log + LBSP + (1|Site), data = data_2019)
+summary(m2019)
+anova(m2019)
+#neither is signif at all
+plot(m2019)
+
+#GAM 
+
+m2019_gam <- gam(Phenotype.X0.mn ~ CDratio_log + LBSP, data =  data_2019)
+summary(m2019_gam)
+anova(m2019_gam)
+#nothing signif 
+
+m2019_gam_cdonly <- gam(Phenotype.X0.mn ~ CDratio_log, data =  data_2019)
+summary(m2019_gam_cdonly)
+#symbiont not signif
+
+m2019_gam_lbsponly <- gam(Phenotype.X0.mn ~ LBSP, data =  data_2019)
+summary(m2019_gam_lbsponly)
+anova(m2019_gam_lbsponly)
+#lbsp not signif 
+
+m2019_gam_siteonly <- gam(Phenotype.X0.mn ~ Site, data =  data_2019)
+summary(m2019_gam_siteonly)
+anova(m2019_gam_siteonly)
+#site is not signif 
+
+#try proportion C
+
+m2019_gam_all_propC <- gam(Phenotype.X0.mn ~ C_prop + LBSP + Site, data =  data_2019)
+anova(m2019_gam_all_propC)
+#nothing signif 
+m2019_gam_propC_lbsp <- gam(Phenotype.X0.mn ~ C_prop + LBSP , data =  data_2019)
+anova(m2019_gam_propC_lbsp)
+#nothing signif 
+
+# try GE
+m2019 <- lm(Phenotype.X0.mn ~ MEcoral2 + MEthistle1 + MEbisque4 + MEpurple + MEdarkorange + MEpaleturquoise + MEdarkmagenta + MEorange + MEhoneydew1 + MEorangered4, data =  data_2019)
+anova(m2019)
+summary(m2019)
+sm2019 <- step(m2019)
+summary(sm2019)
+#overfitting an issue 
+#n/10 -> should use ~4 variables 
+#don't rely on step -> instead use train test (80% to train, then test using remaining 20%)
+#get r2 -> randomize and bootstrap 10,000 times and get distribution 
+
+#only select signif modules 
+
+sigm2019 <- lm(Phenotype.X0.mn ~ MEthistle1 + MEpurple + MEpaleturquoise + MEdarkmagenta + MEdarkorange + MEhoneydew1, data =  data_2019)
+anova(sigm2019)
+summary(sigm2019)
+
+#simplify remove non sig 
+sigm2019_simp <- lm(Phenotype.X0.mn ~ MEthistle1 + MEpurple + MEpaleturquoise + MEdarkmagenta, data =  data_2019)
+anova(sigm2019_simp)
+summary(sigm2019_simp)
+#r2 is 66% 
+
+AIC(sigm2019_simp, sigm2019)
+#maybe retain all 6 modules?
+```
+
+```{r}
+
+```
+
+
+5.02% of thermotolerance variation explained by proportion C in 2019 
+(compared to 7.5% in 2014)
+
+0.0272% of thermotolerance variation explained by LBSP in 2019
+(compared to 15.4% in 2014)
+
+Better to do this as 'step-down' method to determine var explained 
+
+```{r }
+#look at % var explained by each variable
+m2019 <- gam(Phenotype.X0.mn ~ MEthistle1, data =  data_2019)
+summary(m2019)
+#14.8% by thistle1
+
+m2019 <- gam(Phenotype.X0.mn ~ MEpurple, data =  data_2019)
+summary(m2019)
+#13.4 by purple
+
+m2019 <- gam(Phenotype.X0.mn ~ MEpaleturquoise, data =  data_2019)
+summary(m2019)
+#13.3 by paleturquoise
+
+m2019 <- gam(Phenotype.X0.mn ~MEdarkmagenta, data =  data_2019)
+summary(m2019)
+#22.8 by darkmeganta
+
+m2019 <- gam(Phenotype.X0.mn ~ C_prop, data =  data_2019)
+summary(m2019)
+#5.02 by C prop
+
+m2019 <- gam(Phenotype.X0.mn ~ LBSP, data =  data_2019)
+summary(m2019)
+#0.0272 % by LBSP
+```
+
+
+#Plot symbiont community by thermotolerance (Fig 6a from report)
+
+Weird that 2014 has so many 100% D colonies, but report doesn't show that? 
+-fig 6a high thermotol,low C points are mostly high pollution, maybe driven by Cannery data that we do not have here?
+
+Though it still looks like more of a trend in 2014 compared to 2019 ?
+
+```{r}
+#2014
+g14 <- ggplot(data_2014, aes(x= CDratio_log, y = MortDegDays #,col = Site
+                             )) + geom_point(size = 5) + xlab("Log C:D Ratio \n left = more D, right = more C") + ylab("MortDegDays \n higher = more thermotol") + theme_bw() + ggtitle("2014 Log C:D ratio by Mortality in Degree Days") + geom_smooth(method=loess) + xlim(-21,21)
+#tried method = gam here and looks almost linear 
+
+#2019
+g19 <- ggplot(data_2019, aes(x= CDratio_log, y = Phenotype.X0.mn #,col = Site
+                             )) + geom_point(size = 5) + xlab("Log C:D Ratio \n left = more D, right = more C") + ylab("Two-metric thermotolerance \n higher = more thermotol") + theme_bw() + ggtitle("2019 Log C:D ratio by two-metric thermotolerance") + geom_smooth(method= gam)  + xlim(-21,21)
+#tried method = loess here and won't plot 
+
+g14+g19
+
+```
+Try proportion C / D instead of ratio
+
+```{r}
+#2014
+g14 <- ggplot(data_2014, aes(x= C_prop, y = MortDegDays #,col = Site
+                             )) + geom_point(size = 5) + xlab("Proportion C") + ylab("MortDegDays \n higher = more thermotol") + theme_bw() + ggtitle("2014 Log C:D ratio by Mortality in Degree Days") + geom_smooth(method=gam) 
+
+#2019
+g19 <- ggplot(data_2019, aes(x= C_prop, y = Phenotype.X0.mn #,col = Site
+                             )) + geom_point(size = 5) + xlab("Log C:D Ratio \n left = more D, right = more C") + ylab("Two-metric thermotolerance \n higher = more thermotol") + theme_bw() + ggtitle("2019 Log C:D ratio by two-metric thermotolerance") + geom_smooth(method=gam) + xlim(0,1)
+
+g14+g19
+
+```
+
+
+Try removing the 100% C and 100% D colonies to recreate 6a?
+
+Then try using MortTemp instead of MortDegDays
+
+```{r}
+#2014
+
+data_2014_test <- data_2014[!data_2014$CDratio_log == -20,]
+data_2014_test <- data_2014_test[!data_2014_test$CDratio_log == 20,]
+ggplot(data_2014_test, aes(x= CDratio_log, y = MortDegDays)) + geom_point(size = 5) + xlab("Log C:D Ratio \n left = more D, right = more C") + ylab("MortDegDays \n higher = more thermotol") + theme_bw() + ggtitle("2014 Log C:D ratio by Mortality in Degree Days") + stat_smooth(method=gam)
+
+ggplot(data_2014, aes(x= CDratio_log, y = MortTemp)) + geom_point(size = 5) + xlab("Log C:D Ratio \n left = more D, right = more C") + ylab("MortTemp \n higher = more thermotol") + theme_bw() + ggtitle("2014 Log C:D ratio by Mortality Temperature") + stat_smooth(method=gam)
+
+```

@@ -18,7 +18,8 @@ library(car)
 library(agricolae)
 library(lmerTest)
 library(ggpubr)
-library(tidyr)
+library(tidyverse)
+library(broom)
 
 data <- read.csv("clean data/MasterASData.csv")
 head(data)
@@ -26,62 +27,120 @@ data$Time.point <- as.character(data$Time.point)
 #insert "field" into timepoint for field collected corals
 data$Time.point[data$Ramp == "Field"] <- "Field"
 
+#if tank A-D, rep 1; if tank E-F, rep 2
+data$Rep[data$Tank == "A"] <- "1"
+data$Rep[data$Tank == "B"] <- "1"
+data$Rep[data$Tank == "C"] <- "1"
+data$Rep[data$Tank == "D"] <- "1"
+data$Rep[data$Tank == "E"] <- "2"
+data$Rep[data$Tank == "F"] <- "2"
+data$Rep[data$Tank == "G"] <- "2"
+data$Rep[data$Tank == "H"] <- "2"
+data$Tank <- NULL
 ```
 
-
+#Prep color card data
 ```{r}
 data_cw <- data
 head(data_cw)
 data_cw$AverageRed <- NULL
 data_cw$PAM..Fv.Fm. <- NULL
 data_cw$X <- NULL
-#if tank A-D, rep 1; if tank E-F, rep 2
-data_cw$Rep[data_cw$Tank == "A"] <- "1"
-data_cw$Rep[data_cw$Tank == "B"] <- "1"
-data_cw$Rep[data_cw$Tank == "C"] <- "1"
-data_cw$Rep[data_cw$Tank == "D"] <- "1"
-data_cw$Rep[data_cw$Tank == "E"] <- "2"
-data_cw$Rep[data_cw$Tank == "F"] <- "2"
-data_cw$Rep[data_cw$Tank == "G"] <- "2"
-data_cw$Rep[data_cw$Tank == "H"] <- "2"
-data_cw$Tank <- NULL
-data_cw$Coral.Watch.Color1 <- NULL
 data_cw$Coral.Watch.Color2 <- NULL
 
-data_CW3 <- spread(data_cw, Ramp, Coral.Watch.Color3)
-head(data_CW3)
+data_cw <- data_cw %>% drop_na(Coral.Watch.Color3) # remove NAs
+data_cw$Coral.Watch.Color.Change.1to3 <- data_cw$Coral.Watch.Color3 - data_cw$Coral.Watch.Color1
+
+data_cw$Genobysite <- paste0(data_cw$Colony,"_",data_cw$Site)
+```
+#Prep red intensity data
+```{r}
+data_red <- data
+data_red$Coral.Watch.Color1 <- NULL
+data_red$Coral.Watch.Color2 <- NULL
+data_red$Coral.Watch.Color3 <- NULL
+data_red$PAM..Fv.Fm. <- NULL
+data_red$X <- NULL
+data_red <- spread(data_red, Time.point, AverageRed)
+data_red <- data_red %>% 
+  drop_na(Recovery) %>% # remove NAs
+  drop_na(Stress) # remove NAs
+
+data_red$red_intensity_change <- data_red$Stress - data_red$Recovery
+
+data_red$Genobysite <- paste0(data_red$Colony,"_",data_red$Site)
 
 ```
+
+
 
 
 # Identify top 10 most/least tolerant colonies
 
+Can choose either:
+1. data_cw for color card change data (Coral.Watch.Color.Change.1to3)
+2. data_red for red intensity change data (red_intensity_change)
+
+
 ```{r}
 #Fit linear model for each genotype across all temperatures
-data_CW3 <- data_CW3 %>% drop_na(PAMChange) # remove NAs
-slopes<-pam.data %>% group_by(Genobysite) %>% do(tidy(lm(PAMChange ~ Treatment, .)))
 
-strong <- slopes %>%
-  ungroup() %>%
-  filter(term=="Treatment") %>%
-  arrange(estimate) %>%
-  slice_head(n = 10) %>%
-  mutate(tolerance="least_tolerant")
-strong_corals <-right_join(pam.data, strong, by = "Genobysite")
+slopes<-data_red %>% group_by(Genobysite) %>% do(tidy(lm(red_intensity_change
+ ~ Ramp, .)))
 
 weak <- slopes %>%
-  ungroup() %>%
-  filter(term=="Treatment") %>%
-  arrange(estimate) %>%
+  group_by(Genobysite) %>%
+  summarise_at(vars(estimate), list(estimate_mean = mean)) %>%
+  arrange(estimate_mean) %>%
+  slice_head(n = 10) %>%
+  mutate(tolerance="least_tolerant") %>%
+  ungroup() 
+weak_corals <-right_join(data_red, weak, by = "Genobysite")
+
+strong <- slopes %>%
+  group_by(Genobysite) %>%
+  summarise_at(vars(estimate), list(estimate_mean = mean)) %>%
+  arrange(estimate_mean) %>%
   slice_tail(n = 10) %>%
-  mutate(tolerance="most_tolerant")
-weak_corals <-right_join(pam.data, weak, by = "Genobysite")
+  mutate(tolerance="most_tolerant") %>%
+  ungroup()
+strong_corals <-right_join(data_red, strong, by = "Genobysite")
           
 weak.strong <-bind_rows(strong_corals, weak_corals)
 
 ```
+
+
+# Plot weakest & stronge genotypes
+```{r}
+ggplot(data=weak.strong, 
+    aes(x=Ramp, y=Coral.Watch.Color.Change.1to3, label= Ramp, group=Genobysite, color=Site)) +
+  #scale_fill_manual(values = c ("#56B4E9", "#E69F00"), name = "Reef site") +
+  geom_point()+
+  geom_smooth(method = "lm", se = FALSE)+
+  facet_grid(~tolerance, space = "free", scales = "free")+ #this can also be used but rows and columns have to be specified -> facet_grid(. ~ experiment)
+  theme_bw() +
+  annotate("segment", x=-Inf, xend=-Inf, y=-Inf, yend=Inf, colour = "black", size=2)
+  
+#ggsave("Figures/GenoTolerance_colorcard_06122021_mn.pdf", width = 10, height = 6)
 ```
 
+# Plot weakest & stronge genotypes by site
+
+(next: are any genotypes in top 10 of most heat AND cold tolerant?)
+```{r}
+hist.weak.strong <- weak.strong %>%
+  select(Genobysite, Site,estimate_mean, tolerance) %>%
+  unique()
+
+ggplot(data=hist.weak.strong, 
+  aes(x=Site , fill = tolerance)) +
+  #scale_fill_manual(values = c ("#56B4E9", "#E69F00"), name = "Reef site") +
+  geom_bar()+
+  theme_bw() 
+  #ggtitle(paste0('Top10_Genotypes_', params$Species, '_', params$RampType)) 
+#ggsave("Figures/Top10_colorcard_06122021_mn.pdf", width = 10, height = 6)
+```
 
 
 

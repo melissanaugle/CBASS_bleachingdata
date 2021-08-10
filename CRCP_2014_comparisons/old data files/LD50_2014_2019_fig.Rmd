@@ -1,0 +1,89 @@
+---
+title: "LD50_2014_2019_figure"
+author: "Melissa Naugle"
+date: "6/28/2021"
+output: html_document
+---
+
+
+```{r}
+setwd("/Users/Melissa/Desktop/GitHub/CBASS_bleachingdata/CRCP_2014/")
+rm( list = ls())
+graphics.off()
+library("ggplot2")
+library("tidyverse")
+library("patchwork")
+```
+
+
+```{r}
+y14 <- read.csv("ThermalResistance_SpeciesBySite.csv")
+y19 <- read.csv("UniqueColony_SCLERAModeling_2019_v1.5.csv")
+
+#y14 select only hyacinthus, only from july 
+y14 <- y14 %>%
+  filter(Species == "Acropora hyacinthus") %>%
+  filter(grepl("07", Species.Site.Season))
+
+#Make site names consistent
+y14$Site[y14$Site == "FagaAlu"] <- "Faga'alu"
+y14$Site[y14$Site == "CoconutPt"] <- "Coconut Point"
+y14$Site[y14$Site == "Fagatele"] <- "Faga'tele"
+y14$Site[y14$Site == "Fagaitua"] <- "Faga'itua"
+
+
+#change y19 to say moderate instead of medium
+y19$LBSP <- gsub("Medium", "Moderate", y19$LBSP)
+
+#change vatia to moderate pollution
+#y19$LBSP[y19$Site == "Vatia"] <- "Moderate"       
+
+sitelevely19 <- y19 %>%
+  group_by(Site) %>%
+  summarize(Phenotype.X0.PC1_mean =  mean(Phenotype.X0.PC1), LBSP = LBSP)
+
+sitelevely19
+```
+
+
+Plots by LBSP category
+```{r}
+
+p14 <- ggplot(y14, aes(LBSP_Category,LD50, fill = LBSP_Category)) + geom_boxplot() + scale_x_discrete(limits = c("Low", "Moderate", "High")) + xlab("") + ylab("LD50") + theme_minimal() + ylim(35,55) + scale_fill_manual(values = c("tomato2","aquamarine3", "goldenrod2" )) + geom_point() + theme(legend.position="none") + ggtitle("2014")
+
+p19 <- ggplot(sitelevely19, aes(LBSP,Phenotype.X0.PC1_mean, fill = LBSP)) + geom_boxplot() + scale_x_discrete(limits = c("Low", "Moderate", "High")) + xlab("") + ylab("PC1") + theme_minimal() + geom_point()+ scale_fill_manual(values = c("tomato2","aquamarine3", "goldenrod2" )) + theme(legend.position="right")+ ggtitle("2019")
+
+p14 + p19
+```
+
+
+Plots by site (common sites)
+```{r}
+
+y14_5sites <- y14 %>%
+  filter(Site == "Cannery" | Site =="Coconut Point" |Site == "Faga'alu" | Site =="Vatia" |Site == "Faga'tele")
+
+p14 <- ggplot(y14_5sites, aes(Site,LD50, fill = Site)) + geom_boxplot()  + xlab("") + ylab("LD50") + theme_minimal() + ylim(35,55) + geom_point() + scale_x_discrete(limits = c("Cannery", "Coconut Point", "Faga'alu", "Vatia", "Faga'tele"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1))+ ggtitle("2014")+ scale_fill_manual(values = c("tomato2","tomato2", "goldenrod3", "aquamarine3","goldenrod3")) + theme(legend.position="none")
+
+p19 <- ggplot(y19, aes(Site,Phenotype.X0.PC1, fill = Site)) + geom_boxplot() + xlab("") + ylab("PC1") + theme_minimal() + geom_point() + scale_x_discrete(limits = c("Cannery", "Coconut Point", "Faga'alu", "Vatia", "Faga'tele"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1)) + ggtitle("2019")+ scale_fill_manual(values = c("tomato2","tomato2", "goldenrod3", "aquamarine3","goldenrod3" ))
+
+p14 + p19
+```
+
+
+
+
+Plots by site (all sites)
+```{r}
+#rearrange levels for graphing
+p14$Site <- factor(p14$Site, levels = c("Cannery", "Coconut Point", "Faga'alu", "Faga'itua", "Fagamalo_Village", "Vatia", "Fagamalo_MPA","Faga'tele","Aoa" , "Amouli"))
+
+p14 <- ggplot(y14, aes(Site,LD50, fill = Site)) + geom_boxplot()  + xlab("") + ylab("LD50") + theme_minimal() + ylim(35,55) + geom_point() + scale_x_discrete(limits = c("Cannery", "Coconut Point", "Faga'alu", "Faga'itua", "Fagamalo_Village", "Vatia", "Fagamalo_MPA","Faga'tele","Aoa" , "Amouli"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme(legend.position="right") + ggtitle("2014") + scale_fill_manual(values = c("aquamarine3","aquamarine3", "red","red", "goldenrod3", "goldenrod3","aquamarine3","aquamarine3", "goldenrod3", "goldenrod3" ))
+
+p19 <- ggplot(y19, aes(Site,Phenotype.X0.PC1, fill = Site)) + geom_boxplot() + xlab("") + ylab("PC1") + theme_minimal() + geom_point() + scale_x_discrete(limits = c("Cannery", "Coconut Point", "Faga'alu", "Vatia", "Faga'tele"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme(legend.position="none") + ggtitle("2019") + scale_fill_manual(values = c("tomato2","tomato2", "goldenrod3", "aquamarine3","goldenrod3" ))
+
+p14 + p19
+```
+
+
+

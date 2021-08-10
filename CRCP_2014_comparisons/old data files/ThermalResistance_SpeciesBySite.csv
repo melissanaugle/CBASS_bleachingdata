@@ -1,0 +1,17 @@
+,Site,Species,Species.Site.Season,TimeToMortality_Mn,LD50,LD50DHDay,LBSP_Category
+1,Amouli,Acropora hyacinthus,Acropora hyacinthus.Amouli.07,42,39.15,8.166666667,Moderate
+2,Aoa,Acropora hyacinthus,Acropora hyacinthus.Aoa.07,47.33333333,43.5,9.0625,Low
+3,Cannery,Acropora hyacinthus,Acropora hyacinthus.Cannery.03,66.81481481,64.25,18.725,High
+4,Cannery,Acropora hyacinthus,Acropora hyacinthus.Cannery.07,55.86666667,53.95,13.43756944,High
+5,CoconutPt,Acropora hyacinthus,Acropora hyacinthus.CoconutPt.07,53.46666667,52,12.27777778,High
+6,FagaAlu,Acropora hyacinthus,Acropora hyacinthus.FagaAlu.03,59.58024691,57.1,15.50423611,Moderate
+7,FagaAlu,Acropora hyacinthus,Acropora hyacinthus.FagaAlu.07,53.26666667,49.8,10.9975,Moderate
+8,Fagaitua,Acropora hyacinthus,Acropora hyacinthus.Fagaitua.03,57.74603175,55.6,14.51777778,Moderate
+9,Fagaitua,Acropora hyacinthus,Acropora hyacinthus.Fagaitua.07,54.08333333,51.45,11.92194444,Moderate
+10,Fagamalo_MPA,Acropora hyacinthus,Acropora hyacinthus.Fagamalo_MPA.07,51.8,48.95,10.493125,Low
+11,Fagamalo_Village,Acropora hyacinthus,Acropora hyacinthus.Fagamalo_Village.07,52.95238095,50.05,11.11111111,Low
+12,Fagatele,Acropora hyacinthus,Acropora hyacinthus.Fagatele.03,59.9047619,57.65,15.90756944,Low
+13,Fagatele,Acropora hyacinthus,Acropora hyacinthus.Fagatele.07,51.71428571,48.05,10.05423611,Low
+14,Vatia,Acropora hyacinthus,Acropora hyacinthus.Vatia.07,46.6,43.75,9.104166667,Moderate
+15,FagaAlu,Pocillopora damicornis,Pocillopora damicornis.FagaAlu.03,75.13888889,71.25,20.76666667,Moderate
+16,Fagaitua,Pocillopora damicornis,Pocillopora damicornis.Fagaitua.03,96,0,0,Moderate
