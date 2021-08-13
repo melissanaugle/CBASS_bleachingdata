@@ -285,6 +285,10 @@ summary(m2019)
 ```
 
 
+
+########################################################################################
+
+
 #Plot symbiont community by thermotolerance (Fig 6a from report)
 
 Weird that 2014 has so many 100% D colonies, but report doesn't show that? 

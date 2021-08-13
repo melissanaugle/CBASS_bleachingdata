@@ -30,7 +30,11 @@ y14_march <- y14 %>%
 y14_july <- y14 %>%
   filter(Season == "July")
 
-sitelevely14<- y14 %>%
+sitelevely14_m <- y14_march %>%
+  group_by(Site) %>%
+  summarize(MortDegDays =  mean(MortDegDays), LBSP = LBSP)
+
+sitelevely14_j <- y14_july %>%
   group_by(Site) %>%
   summarize(MortDegDays =  mean(MortDegDays), LBSP = LBSP)
 
@@ -43,30 +47,39 @@ sitelevely19 <- y19 %>%
 
 Plots by LBSP category
 ```{r}
+#change factor levels for legend order
+y14_march$LBSP <- factor(y14_march$LBSP , levels = c("Low", "Moderate", "High"))
+y14_july$LBSP <- factor(y14_july$LBSP , levels = c("Low", "Moderate", "High"))
+y19$LBSP <- factor(y19$LBSP , levels = c("Low", "Moderate", "High"))
 
-p14_m <- ggplot(y14_march, aes(LBSP,MortDegDays, fill = LBSP)) + geom_boxplot() + scale_x_discrete(limits = c("Low", "Moderate", "High")) + xlab("") + ylab("Mortality in Degree Days") + theme_minimal() + scale_fill_manual(values = c("tomato2","aquamarine3", "goldenrod2" )) + geom_point() + theme(legend.position="none") + ggtitle("March 2014")
 
-p14_j <- ggplot(y14_july, aes(LBSP,MortDegDays, fill = LBSP)) + geom_boxplot() + scale_x_discrete(limits = c("Low", "Moderate", "High")) + xlab("") + ylab("Mortality in Degree Days") + theme_minimal() + scale_fill_manual(values = c("tomato2","aquamarine3", "goldenrod2" )) + geom_point() + theme(legend.position="none") + ggtitle("July 2014")
+p14_m <- ggplot(y14_march, aes(LBSP,MortDegDays, fill = LBSP)) + geom_boxplot() + scale_x_discrete(limits = c("Low", "Moderate", "High")) + xlab("") + ylab("Mortality in Degree Days") + theme_minimal() + scale_fill_manual(values = c("aquamarine3","goldenrod2", "tomato2" )) + geom_point() + theme(legend.position="none") + ggtitle("March 2014") + ylim(3,23) + theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
 
-p19 <- ggplot(y19, aes(LBSP,Phenotype.X0.PC1, fill = LBSP)) + geom_boxplot() + scale_x_discrete(limits = c("Low", "Moderate", "High")) + xlab("") + ylab("Thermotolerance PC1") + theme_minimal() + geom_point()+ scale_fill_manual(values = c("tomato2","aquamarine3", "goldenrod2" )) + theme(legend.position="right")+ ggtitle("August 2019")
+p14_j <- ggplot(y14_july, aes(LBSP,MortDegDays, fill = LBSP)) + geom_boxplot() + scale_x_discrete(limits = c("Low", "Moderate", "High")) + xlab("") + ylab("Mortality in Degree Days") + theme_minimal() + scale_fill_manual(values = c("aquamarine3","goldenrod2", "tomato2" )) + geom_point() + theme(legend.position="none") + ggtitle("July 2014") + ylim(3,23) + theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
+
+p19 <- ggplot(y19, aes(LBSP,Phenotype.X0.PC1, fill = LBSP)) + geom_boxplot() + scale_x_discrete(limits = c("Low", "Moderate", "High")) + xlab("") + ylab("Thermotolerance PC1") + theme_minimal() + geom_point()+ scale_fill_manual(values = c("aquamarine3","goldenrod2", "tomato2")) + theme(legend.position="right")+ ggtitle("August 2019") + guides(fill=guide_legend(title="Pollution Level")) + theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
 
 p14_m + p14_j + p19
 
 
 ```
 
+#pollution categories by site level means 
 
-Plots by site (common sites)
 ```{r}
+#change factor levels for legend order
+sitelevely14_m$LBSP <- factor(sitelevely14_m$LBSP , levels = c("Low", "Moderate", "High"))
+sitelevely14_j$LBSP <- factor(sitelevely14_j$LBSP , levels = c("Low", "Moderate", "High"))
+sitelevely19$LBSP <- factor(sitelevely19$LBSP , levels = c("Low", "Moderate", "High"))
 
-y14_5sites <- y14 %>%
-  filter(Site == "Cannery" | Site =="Coconut Point" |Site == "Faga'alu" | Site =="Vatia" |Site == "Faga'tele")
 
-p14 <- ggplot(y14_5sites, aes(Site,LD50, fill = Site)) + geom_boxplot()  + xlab("") + ylab("LD50") + theme_minimal() + ylim(35,55) + geom_point() + scale_x_discrete(limits = c("Cannery", "Coconut Point", "Faga'alu", "Vatia", "Faga'tele"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1))+ ggtitle("2014")+ scale_fill_manual(values = c("tomato2","tomato2", "goldenrod3", "aquamarine3","goldenrod3")) + theme(legend.position="none")
+p14_m <- ggplot(sitelevely14_m, aes(LBSP,MortDegDays, fill = LBSP)) + geom_boxplot() + scale_x_discrete(limits = c("Low", "Moderate", "High")) + xlab("") + ylab("Mortality in Degree Days") + theme_minimal() + scale_fill_manual(values = c("aquamarine3","goldenrod2", "tomato2" )) + geom_point() + theme(legend.position="none") + ggtitle("March 2014") + ylim(3,19) + theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
 
-p19 <- ggplot(y19, aes(Site,Phenotype.X0.PC1, fill = Site)) + geom_boxplot() + xlab("") + ylab("PC1") + theme_minimal() + geom_point() + scale_x_discrete(limits = c("Cannery", "Coconut Point", "Faga'alu", "Vatia", "Faga'tele"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1)) + ggtitle("2019")+ scale_fill_manual(values = c("tomato2","tomato2", "goldenrod3", "aquamarine3","goldenrod3" ))
+p14_j <- ggplot(sitelevely14_j, aes(LBSP,MortDegDays, fill = LBSP)) + geom_boxplot() + scale_x_discrete(limits = c("Low", "Moderate", "High")) + xlab("") + ylab("Mortality in Degree Days") + theme_minimal() + scale_fill_manual(values = c("aquamarine3","goldenrod2", "tomato2" )) + geom_point() + theme(legend.position="none") + ggtitle("July 2014") + ylim(3,19) + theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
 
-p14 + p19
+p19 <- ggplot(sitelevely19, aes(LBSP,Phenotype.X0.PC1, fill = LBSP)) + geom_boxplot() + scale_x_discrete(limits = c("Low", "Moderate", "High")) + xlab("") + ylab("Thermotolerance PC1") + theme_minimal() + geom_point()+ scale_fill_manual(values = c("aquamarine3","goldenrod2", "tomato2")) + theme(legend.position="right")+ ggtitle("August 2019") + guides(fill=guide_legend(title="Pollution Level")) + theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1))
+
+p14_m + p14_j + p19
 ```
 
 
@@ -75,11 +88,34 @@ p14 + p19
 Plots by site (all sites)
 ```{r}
 #rearrange levels for graphing
-p14$Site <- factor(p14$Site, levels = c("Cannery", "Coconut Point", "Faga'alu", "Faga'itua", "Fagamalo_Village", "Vatia", "Fagamalo_MPA","Faga'tele","Aoa" , "Amouli"))
+y14_march$Site <- factor(y14_march$Site, levels = c("Faga'tele", "Faga'itua","Faga'alu", "Cannery"))
+y14_july$Site <- factor(y14_july$Site, levels = c("Aoa", "Faga'tele" ,"Fagamalo_MPA", "Fagamalo_Village","Amouli","Vatia", "Faga'itua","Faga'alu", "Coconut Point","Cannery"))
+y19$Site <- factor(y19$Site, levels = c("Faga'tele", "Faga'alu",'Vatia', "Coconut Point", "Cannery"))
 
-p14 <- ggplot(y14, aes(Site,LD50, fill = Site)) + geom_boxplot()  + xlab("") + ylab("LD50") + theme_minimal() + ylim(35,55) + geom_point() + scale_x_discrete(limits = c("Cannery", "Coconut Point", "Faga'alu", "Faga'itua", "Fagamalo_Village", "Vatia", "Fagamalo_MPA","Faga'tele","Aoa" , "Amouli"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme(legend.position="right") + ggtitle("2014") + scale_fill_manual(values = c("aquamarine3","aquamarine3", "red","red", "goldenrod3", "goldenrod3","aquamarine3","aquamarine3", "goldenrod3", "goldenrod3" ))
+p14_m <- ggplot(y14_march, aes(Site,MortDegDays, fill = Site)) + geom_boxplot()  + xlab("") + ylab("Mortality in Degree Days") + theme_minimal() + geom_point() + scale_x_discrete(limits = c("Faga'tele" ,"Faga'itua","Faga'alu", "Cannery"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme(legend.position="none") + ggtitle("March 2014") + scale_fill_manual(values = c("aquamarine3","goldenrod3","goldenrod3","tomato2")) + ylim(3,23)
 
-p19 <- ggplot(y19, aes(Site,Phenotype.X0.PC1, fill = Site)) + geom_boxplot() + xlab("") + ylab("PC1") + theme_minimal() + geom_point() + scale_x_discrete(limits = c("Cannery", "Coconut Point", "Faga'alu", "Vatia", "Faga'tele"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme(legend.position="none") + ggtitle("2019") + scale_fill_manual(values = c("tomato2","tomato2", "goldenrod3", "aquamarine3","goldenrod3" ))
+p14_j <- ggplot(y14_july, aes(Site,MortDegDays, fill = Site)) + geom_boxplot()  + xlab("") + ylab("Mortality in Degree Days") + theme_minimal()  + geom_point() + scale_x_discrete(limits = c("Aoa","Faga'tele","Fagamalo_MPA", "Fagamalo_Village","Amouli","Vatia", "Faga'itua","Faga'alu", "Coconut Point","Cannery"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme(legend.position="none") + ggtitle("July 2014") + scale_fill_manual(values = c( "aquamarine3","aquamarine3","aquamarine3","aquamarine3", "goldenrod3", "goldenrod3","goldenrod3", "goldenrod3", "tomato2","tomato2"))+ ylim(3,23)
+
+
+p19 <- ggplot(y19, aes(Site,Phenotype.X0.PC1, fill = Site)) + geom_boxplot() + xlab("") + ylab("Thermotolerance PC1") + theme_minimal() + geom_point() + scale_x_discrete(limits = c("Faga'tele", "Faga'alu",'Vatia', "Coconut Point", "Cannery"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme(legend.position="none") + ggtitle("August 2019") + scale_fill_manual(values = c("aquamarine3","goldenrod3", "goldenrod3","tomato2", "tomato2"))
+
+
+p14_m + p14_j + p19
+
+ggsave("../Figures/colonylevel_bysite_allsites_alltimes_08_11_21.png", width = 10, height = 5)
+```
+
+
+
+Plots by site (common sites)
+```{r}
+
+y14_5sites <- y14 %>%
+  filter(Site == "Cannery" | Site =="Coconut Point" |Site == "Faga'alu" | Site =="Vatia" |Site == "Faga'tele")
+
+p14 <- ggplot(y14_5sites, aes(Site,MortDegDays, fill = Site)) + geom_boxplot()  + xlab("") + ylab("LD50") + theme_minimal() + geom_point() + scale_x_discrete(limits = c("Cannery", "Coconut Point", "Faga'alu", "Vatia", "Faga'tele"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1))+ ggtitle("2014")+ scale_fill_manual(values = c("tomato2","tomato2", "goldenrod3", "aquamarine3","goldenrod3")) + theme(legend.position="none")
+
+p19 <- ggplot(y19, aes(Site,Phenotype.X0.PC1, fill = Site)) + geom_boxplot() + xlab("") + ylab("PC1") + theme_minimal() + geom_point() + scale_x_discrete(limits = c("Cannery", "Coconut Point", "Faga'alu", "Vatia", "Faga'tele"))+ theme(axis.text.x = element_text(angle = 45, hjust = 1)) + ggtitle("2019")+ scale_fill_manual(values = c("tomato2","tomato2", "goldenrod3", "aquamarine3","goldenrod3" ))
 
 p14 + p19
 ```

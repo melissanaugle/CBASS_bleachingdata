@@ -1,0 +1,308 @@
+---
+title: 'Modeling Thermotolerance by Symbionts + pollution 2014 and 2019'
+author: "Melissa Naugle"
+date: "8/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+setwd(dir = "~/Desktop/GitHub/CBASS_bleachingdata/Modeling/")
+rm( list = ls())
+graphics.off()
+library(reshape2)
+library(DescTools)
+library(epitools)
+library(patchwork)
+library(tidyverse)
+library(mosaic)
+library(lme4)
+library(lmerTest)
+library(mgcv)
+```
+Load data, join together  
+
+```{r}
+LD50_2014 <- read.csv("data/2014_ColonyOutput_Assays_SCLERA.csv")
+LD50_2014 <- LD50_2014[LD50_2014$Species == "Acropora hyacinthus",]
+LD50_2019 <- read.csv("data/2019_UniqueColony_SCLERAModeling_v1.5.csv")
+LD50_2019$Site_Col <- paste0(LD50_2019$Site,"_",LD50_2019$Colony)
+LD50_2019$Site <- NULL
+LD50_2019$LBSP <- NULL
+LD50_2019$pop2016 <- NULL
+symbiont_2014 <- read.csv("data/2014_fromtom_symbiont_log_ratios_allsites_08_05_21_LBSP.csv")
+symbiont_2014$Site <- NULL
+symbiont_2014$Season <- NULL
+symbiont_2019 <- read.csv("data/2019_symbiont_log_ratios_08_05_21_LBSP.csv")
+symbiont_2019$Site_Col <- paste0(symbiont_2019$Site,"_",symbiont_2019$Colony)
+
+GE_controls_2019 <- read.csv("data/eignegenes_controls.csv")
+GE_controls_2019$Site_Col <- paste0(GE_controls_2019$Site,"_",GE_controls_2019$Rep)
+GE_controls_2019$Site <- NULL
+
+data_2014 <- left_join(symbiont_2014, LD50_2014, by = "Colony")
+data_2019 <- left_join(symbiont_2019, LD50_2019, by = "Site_Col")
+data_2019 <- left_join(data_2019, GE_controls_2019, by = "Site_Col")
+```
+
+#Modeling 2014
+
+```{r }
+#s() for continuous variables 
+#k = num knots (choose 3 or 5 or something small)
+#use gam to see if non-linear then return to lmer w modifications ? 
+#could consider using site #GAMM for that - more for exploratory (not trying this rn)
+#could log transform C prop - or switch to cd ratio
+
+#look at dist of c prop 
+plot(sort(data_2014$C_prop))
+plot(sort(log10(data_2014$C_prop+1e-5)))
+
+#try GAM full model 
+#everything is significant  
+m2014_gam_full_cproplog <- gam(MortDegDays ~ s(log(C_prop+1e-5), k = 5) + Season + LBSP + Site, data =  data_2014)
+summary(m2014_gam_full_cproplog)
+
+m2014_gam_full_cprop <- gam(MortDegDays ~ s(C_prop, k = 5) + Season + LBSP + Site, data =  data_2014)
+summary(m2014_gam_full_cprop)
+
+m2014_gam_full_cdratio <- gam(MortDegDays ~ s(CDratio_log, k = 5) + Season + LBSP + Site, data =  data_2014)
+summary(m2014_gam_full_cproplog)
+
+AIC(m2014_gam_full_cproplog, m2014_gam_full_cprop, m2014_gam_full_cdratio)
+
+#cprop is best. not log. 
+#use c prop to continue 
+
+#drop variables and compare fit 
+
+
+#no site
+m2014_gam_cprop_sea_lbsp <- gam(MortDegDays ~ s(C_prop, k = 5) + Season + LBSP, data =  data_2014)
+summary(m2014_gam_cprop_sea_lbsp)
+plot(m2014_gam_full_Cprop, pages = 1, residuals = T)
+
+#no lbsp
+m2014_gam_nolbsp <- gam(MortDegDays ~ s(C_prop, k = 5) + Season  + Site, data =  data_2014)
+summary(m2014_gam_nolbsp)
+
+#no season
+m2014_gam_nosea <- gam(MortDegDays ~ s(C_prop, k = 5) + LBSP  + Site, data =  data_2014)
+summary(m2014_gam_nosea)
+
+#no c prop 
+m2014_gam_nocprop <- gam(MortDegDays ~ Season +  LBSP  + Site, data =  data_2014)
+summary(m2014_gam_nocprop)
+
+AIC(m2014_gam_full_cprop,m2014_gam_cprop_sea_lbsp, m2014_gam_nolbsp,m2014_gam_nosea, m2014_gam_nocprop)
+#full model and no lbsp are tied 
+
+#try the same below without site since we will use as random factor in linear model 
+#leave-one-out deviance explained - deviance explained with full model and then model - 1 variable  
+m2014_gam_full <- gam(MortDegDays ~ s(C_prop, k = 5) + Season + LBSP, data =  data_2014)
+summary(m2014_gam_full) #58.5%
+
+m2014_gam_full_nocprop <- gam(MortDegDays ~ Season + LBSP, data =  data_2014)
+summary(m2014_gam_full_nocprop) #55%
+#full model - c prop: 58.5 - 55 = 3.5% explained by c prop 
+
+m2014_gam_full_noseason <- gam(MortDegDays ~  s(C_prop, k = 5)  + LBSP, data =  data_2014)
+summary(m2014_gam_full_noseason) #24.4%
+#full model - season: 58.5 - 24.4 = 34.1% explained by season
+
+m2014_gam_full_nolbsp <- gam(MortDegDays ~  s(C_prop, k = 5)  + Season, data =  data_2014)
+summary(m2014_gam_full_nolbsp) #47.1%
+#full model - lbsp: 58.5 - 47.1 = 11.4% explained by lbsp 
+
+AIC(m2014_gam_full, m2014_gam_full_nocprop,m2014_gam_full_noseason,m2014_gam_full_nolbsp)
+#full model is best 
+
+#continue here with lmer similar model to gam 
+m2014_lm_full <- lmer(MortDegDays ~ C_prop + Season + LBSP +  (1|Site), data =  data_2014)
+summary(m2014_lm_full)
+
+m2014_lm_full_nosite <- lm(MortDegDays ~ C_prop + Season + LBSP, data =  data_2014)
+summary(m2014_lm_full_nosite)
+
+AIC(m2014_gam_full, m2014_lm_full, m2014_lm_full_nosite)
+#lm full model is best with site 
+
+#use this model!
+summary(m2014_lm_full)
+anova(m2014_lm_full)
+
+```
+
+#Modeling 2019
+
+Notes:
+overfitting an issue? rule: n/10 -> so should use ~4 variables since n = 38 
+don't rely on step -> instead use train test (80% to train, then test using remaining 20%)
+get r2 -> randomize and bootstrap 10,000 times and get distribution 
+
+```{r }
+#GAM first 
+
+m2019_gam_all <- gam(Phenotype.X0.mn ~ s(C_prop, k = 5) + LBSP +  MEthistle1 + MEpurple + MEpaleturquoise + MEdarkmagenta + MEdarkorange + MEhoneydew1, data =  data_2019)
+summary(m2019_gam_all)
+anova(m2019_gam_all)
+#remove non-signif lbsp, c prop, honeydew, darkorange 
+
+#added smoothing function since eigengene expression is continuous 
+m2019_gam_4mod <- gam(Phenotype.X0.mn ~ s(MEthistle1, k = 5) + s(MEpurple, k = 5) + s(MEpaleturquoise, k = 5) + s(MEdarkmagenta, k = 5), data =  data_2019)
+summary(m2019_gam_4mod)
+anova(m2019_gam_4mod)
+#all 4 signif 
+
+#remove one at a time 
+m2019_gam_nothist <- gam(Phenotype.X0.mn ~ s(MEpurple, k = 5) + s(MEpaleturquoise, k = 5) + s(MEdarkmagenta, k = 5), data =  data_2019)
+m2019_gam_nopurp <- gam(Phenotype.X0.mn ~s(MEthistle1, k = 5)  + s(MEpaleturquoise, k = 5) + s(MEdarkmagenta, k = 5), data =  data_2019)
+m2019_gam_notur <- gam(Phenotype.X0.mn ~s(MEthistle1, k = 5) + s(MEpurple, k = 5)  + s(MEdarkmagenta, k = 5), data =  data_2019)
+m2019_gam_nomag <- gam(Phenotype.X0.mn ~s(MEthistle1, k = 5) + s(MEpurple, k = 5) + s(MEpaleturquoise, k = 5) , data =  data_2019)
+
+AIC(m2019_gam_4mod, m2019_gam_nothist,m2019_gam_nopurp,m2019_gam_notur, m2019_gam_nomag)
+#best includes all 4 modules 
+
+#now lmer
+
+m2019_lm_4mod <- lmer(Phenotype.X0.mn ~MEthistle1 + MEpurple + MEpaleturquoise + MEdarkmagenta +  (1|Site), data =  data_2019)
+summary(m2019_lm_4mod)
+anova(m2019_lm_4mod)
+
+m2019_lm_4mod_nosite <- lm(Phenotype.X0.mn ~MEthistle1 + MEpurple + MEpaleturquoise + MEdarkmagenta , data =  data_2019)
+summary(m2019_lm_4mod_nosite)
+anova(m2019_lm_4mod_nosite)
+
+AIC(m2019_lm_4mod, m2019_lm_4mod_nosite)
+#site marginally helps fit 
+
+#final model
+summary(m2019_lm_4mod)
+anova(m2019_lm_4mod)
+```
+Train test model for 2019 GE data 
+
+```{r}
+#Generate a relatively small data set N~100
+N=200
+fake=data.frame(x=rnorm(N))
+fake$y=1*fake$x+0+.5*(rnorm(N))
+fake$e1=rnorm(N)
+fake$e2=rnorm(N)
+fake$e3=rnorm(N)
+fake$e4=rnorm(N)
+fake$e5=rnorm(N)
+fake$e6=rnorm(N)
+fake$e7=rnorm(N)
+fake$e8=rnorm(N)
+fake$e9=rnorm(N)
+
+#Train on 80-90% of data
+Ptrain=.8
+#Perform Nruns random draws/model fits
+Nruns=100
+Ntrain=round(N*Ptrain,0)
+
+#Fit full model with 9 totally random noise parameters (don't actually use these in your model, this is just to show you overfitting)
+fullmod=lm(y~x+e1+e2+e3+e4+e5+e6+e7+e8+e9,data=fake)
+sfullmod=summary(fullmod)
+sfullmod
+sfullmod$adj.r.squared
+
+#Loop it Nruns times
+TrainOut=data.frame(Run=1:Nruns,Fullmod.rsq=sfullmod$adj.r.squared,trainmod.rsq=NA,test.rsq=NA)
+for(i in 1:Nruns){
+  #get rows for each set, train and test
+  train_i=sample(1:N,Ntrain)
+  test_i=setdiff(1:N,train_i)
+  
+  #get datasets
+  train=fake[train_i,]
+  test=fake[test_i,]
+
+  #Train the model
+  trainmod=lm(y~x+e1+e2+e3+e4,data=train)
+  strainmod=summary(trainmod)
+  #output train data
+  TrainOut$trainmod.rsq[i]=strainmod$adj.r.squared
+  
+  #test predictions using data the model has yet to see
+  ttmod=lm(test$y~predict(trainmod,newdata=test))
+  sttmod=summary(ttmod)
+  #write results out
+  TrainOut$test.rsq[i]=sttmod$adj.r.squared
+  #print progress
+  print(paste0(i," of Nruns"))
+}
+
+par(mfrow=c(3,1))
+#plot1
+plot(test$y~predict(trainmod,newdata=test))
+abline(ttmod)
+
+#plot2:red is full/overfit model fit; Green is train/test
+plot(sort(TrainOut$test.rsq),col="gray",ylim=c(0.5,1))
+abline(h=median(TrainOut$test.rsq),col="green")
+abline(h=median(TrainOut$Fullmod.rsq),col="red")
+
+#plot3: red is full/overfit model fit; Green is train/test
+hist((TrainOut$test.rsq),N/10,xlim=c(0.5,1))
+abline(v=median(TrainOut$test.rsq),col="green")
+abline(v=median(TrainOut$Fullmod.rsq),col="red")
+
+```
+
+
+########################################################################################
+
+
+#Plot symbiont community by thermotolerance (Fig 6a from report)
+
+Weird that 2014 has so many 100% D colonies, but report doesn't show that? 
+-fig 6a high thermotol,low C points are mostly high pollution, maybe driven by Cannery data that we do not have here?
+
+Though it still looks like more of a trend in 2014 compared to 2019 ?
+
+```{r}
+#2014
+g14 <- ggplot(data_2014, aes(x= CDratio_log, y = MortDegDays #,col = Site
+                             )) + geom_point(size = 5) + xlab("Log C:D Ratio \n left = more D, right = more C") + ylab("MortDegDays \n higher = more thermotol") + theme_bw() + ggtitle("2014 Log C:D ratio by Mortality in Degree Days") + geom_smooth(method=loess) + xlim(-21,21)
+#tried method = gam here and looks almost linear 
+
+#2019
+g19 <- ggplot(data_2019, aes(x= CDratio_log, y = Phenotype.X0.mn #,col = Site
+                             )) + geom_point(size = 5) + xlab("Log C:D Ratio \n left = more D, right = more C") + ylab("Two-metric thermotolerance \n higher = more thermotol") + theme_bw() + ggtitle("2019 Log C:D ratio by two-metric thermotolerance") + geom_smooth(method= gam)  + xlim(-21,21)
+#tried method = loess here and won't plot 
+
+g14+g19
+
+```
+Try proportion C / D instead of ratio
+
+```{r}
+#2014
+g14 <- ggplot(data_2014, aes(x= C_prop, y = MortDegDays #,col = Site
+                             )) + geom_point(size = 5) + xlab("Proportion C") + ylab("MortDegDays \n higher = more thermotol") + theme_bw() + ggtitle("2014 Log C:D ratio by Mortality in Degree Days") + geom_smooth(method=gam) 
+
+#2019
+g19 <- ggplot(data_2019, aes(x= C_prop, y = Phenotype.X0.mn #,col = Site
+                             )) + geom_point(size = 5) + xlab("Log C:D Ratio \n left = more D, right = more C") + ylab("Two-metric thermotolerance \n higher = more thermotol") + theme_bw() + ggtitle("2019 Log C:D ratio by two-metric thermotolerance") + geom_smooth(method=gam) + xlim(0,1)
+
+g14+g19
+
+```
+
+
+Try removing the 100% C and 100% D colonies to recreate 6a?
+
+Then try using MortTemp instead of MortDegDays
+
+```{r}
+#2014
+
+data_2014_test <- data_2014[!data_2014$CDratio_log == -20,]
+data_2014_test <- data_2014_test[!data_2014_test$CDratio_log == 20,]
+ggplot(data_2014_test, aes(x= CDratio_log, y = MortDegDays)) + geom_point(size = 5) + xlab("Log C:D Ratio \n left = more D, right = more C") + ylab("MortDegDays \n higher = more thermotol") + theme_bw() + ggtitle("2014 Log C:D ratio by Mortality in Degree Days") + stat_smooth(method=gam)
+
+ggplot(data_2014, aes(x= CDratio_log, y = MortTemp)) + geom_point(size = 5) + xlab("Log C:D Ratio \n left = more D, right = more C") + ylab("MortTemp \n higher = more thermotol") + theme_bw() + ggtitle("2014 Log C:D ratio by Mortality Temperature") + stat_smooth(method=gam)
+
+```
